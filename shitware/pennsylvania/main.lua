@@ -403,12 +403,12 @@ if game.PlaceId == 7533528186 then
             end
         end
     end
-    plr.Backpack.ChildAdded:Connect(function(tool)
+    game.Players.LocalPlayer.Backpack.ChildAdded:Connect(function(tool)
         if tool.Name == "AK47" or tool.Name == "M4 Carbine" or tool.Name == "Glock 17" or tool.Name == "Serbu BFG-50" then
             modGunDropdown:Add(tool.Name)
         end
     end)
-    plr.Backpack.ChildRemoved:Connect(function(tool)
+    game.Players.LocalPlayer.Backpack.ChildRemoved:Connect(function(tool)
         if tool.Name == "AK47" or tool.Name == "M4 Carbine" or tool.Name == "Glock 17" or tool.Name == "Serbu BFG-50" then
             modGunDropdown:Remove(tool.Name)
         end
