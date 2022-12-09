@@ -46,11 +46,6 @@ if game.PlaceId == 7533528186 then
         end
         plr = game.Players[plr.Name] or game.Players.LocalPlayer
     end
-    spawn(function()
-        while wait() do
-           getchar()
-        end
-    end)
 
     local maxBalance = {
         200000, -- wallet
@@ -77,10 +72,11 @@ if game.PlaceId == 7533528186 then
     end
     disableAC()
     spawn(function()
-        while wait() do
+        while task.wait() do
             if character.Packed.Loader2.Disabled == false and character.Packed.Loader1.Disabled == false then
                 disableAC()
             end
+            getchar()
         end
     end)
     character.Humanoid.Died:Connect(function()
@@ -420,171 +416,7 @@ if game.PlaceId == 7533528186 then
 
     ------------------------------------------------------------
 
-    local camera = workspace.CurrentCamera
-    local entities = game:GetService("Players")
-    local localplayer = entities.LocalPlayer
-    local runservice = game:GetService("RunService")
-
-    local esp_settings = {
-        enabled = false,
-        skel = true,
-        skel_col = Color3.fromRGB(255, 255, 255)
-    }
-
-    local function draw(player, characterr)
-
-        local skel_head = Drawing.new("Line")
-        skel_head.Visible = false
-        skel_head.Thickness = 1.5
-        skel_head.Color = Color3.new(1, 1, 1)
-
-        local skel_torso = Drawing.new("Line")
-        skel_torso.Visible = false
-        skel_torso.Thickness = 1.5
-        skel_torso.Color = Color3.new(1, 1, 1)
-
-        local skel_leftarm = Drawing.new("Line")
-        skel_leftarm.Visible = false
-        skel_leftarm.Thickness = 1.5
-        skel_leftarm.Color = Color3.new(1, 1, 1)
-
-        local skel_rightarm = Drawing.new("Line")
-        skel_rightarm.Visible = false
-        skel_rightarm.Thickness = 1.5
-        skel_rightarm.Color = Color3.new(1, 1, 1)
-
-        local skel_leftleg = Drawing.new("Line")
-        skel_leftleg.Visible = false
-        skel_leftleg.Thickness = 1.5
-        skel_leftleg.Color = Color3.new(1, 1, 1)
-
-        local skel_rightleg = Drawing.new("Line")
-        skel_rightleg.Visible = false
-        skel_rightleg.Thickness = 1.5
-        skel_rightleg.Color = Color3.new(1, 1, 1)
-
-        player.PlayerRemoving:Connect(function(playerrrr)
-            skel_head:Remove()
-            skel_torso:Remove()
-            skel_leftarm:Remove()
-            skel_rightarm:Remove()
-            skel_leftleg:Remove()
-            skel_rightleg:Remove()
-        end)
-
-        local function update()
-            local connection
-            connection = runservice.RenderStepped:Connect(function()
-
-                if workspace:FindFirstChild(characterr.Name) and
-                    characterr and
-                    characterr:FindFirstChild("HumanoidRootPart") and
-                    characterr:FindFirstChild("Humanoid") and
-                    characterr:FindFirstChild("Humanoid").Health ~= 0 then
-
-                    local character_rootpart_3d = characterr.HumanoidRootPart.Position
-                    local character_rootpart_2d, rootpart_onscreen = camera:WorldToViewportPoint(character_rootpart_3d)
-
-                    if rootpart_onscreen and characterr.Humanoid.RigType == Enum.HumanoidRigType.R6 and
-                        esp_settings.enabled then
-
-                        local head_2d = camera:WorldToViewportPoint(characterr.Head.Position)
-                        local torso_upper_2d = camera:WorldToViewportPoint(characterr.Torso.Position +
-                            Vector3.new(0, 1, 0))
-                        local torso_lower_2d = camera:WorldToViewportPoint(characterr.Torso.Position +
-                            Vector3.new(0, -1, 0))
-
-                        local leftarm_2d = camera:WorldToViewportPoint(characterr["Left Arm"].Position +
-                            Vector3.new(0, -1, 0))
-                        local rightarm_2d = camera:WorldToViewportPoint(characterr["Right Arm"].Position +
-                            Vector3.new(0, -1,
-                                0))
-                        local leftleg_2d = camera:WorldToViewportPoint(characterr["Left Leg"].Position +
-                            Vector3.new(0, -1, 0))
-                        local rightleg_2d = camera:WorldToViewportPoint(characterr["Right Leg"].Position +
-                            Vector3.new(0, -1,
-                                0))
-
-                        skel_head.From = Vector2.new(head_2d.X, head_2d.Y)
-                        skel_head.To = Vector2.new(torso_upper_2d.X, torso_upper_2d.Y)
-
-                        skel_torso.From = Vector2.new(torso_upper_2d.X, torso_upper_2d.Y)
-                        skel_torso.To = Vector2.new(torso_lower_2d.X, torso_lower_2d.Y)
-
-                        skel_leftarm.From = Vector2.new(torso_upper_2d.X, torso_upper_2d.Y)
-                        skel_leftarm.To = Vector2.new(leftarm_2d.X, leftarm_2d.Y)
-
-                        skel_rightarm.From = Vector2.new(torso_upper_2d.X, torso_upper_2d.Y)
-                        skel_rightarm.To = Vector2.new(rightarm_2d.X, rightarm_2d.Y)
-
-                        skel_leftleg.From = Vector2.new(torso_lower_2d.X, torso_lower_2d.Y)
-                        skel_leftleg.To = Vector2.new(leftleg_2d.X, leftleg_2d.Y)
-
-                        skel_rightleg.From = Vector2.new(torso_lower_2d.X, torso_lower_2d.Y)
-                        skel_rightleg.To = Vector2.new(rightleg_2d.X, rightleg_2d.Y)
-
-                        skel_head.Visible = esp_settings.skel
-                        skel_torso.Visible = esp_settings.skel
-                        skel_leftarm.Visible = esp_settings.skel
-                        skel_rightarm.Visible = esp_settings.skel
-                        skel_leftleg.Visible = esp_settings.skel
-                        skel_rightleg.Visible = esp_settings.skel
-
-                    else
-
-                        skel_head.Visible = false
-                        skel_torso.Visible = false
-                        skel_leftarm.Visible = false
-                        skel_rightarm.Visible = false
-                        skel_leftleg.Visible = false
-                        skel_rightleg.Visible = false
-
-                    end
-
-                else
-
-                    if player == nil then
-                        connection:Disconnect()
-                        connection = nil
-                        skel_head:Remove()
-                        skel_torso:Remove()
-                        skel_leftarm:Remove()
-                        skel_rightarm:Remove()
-                        skel_leftleg:Remove()
-                        skel_rightleg:Remove()
-                        characterr.Head.espp:Destroy()
-                        for _, limb in pairs(characterr:GetChildren()) do
-                            if limb:IsA("BasePart") then
-                                if limb:FindFirstChildWhichIsA("Highlight") then
-                                    limb.lol:Destroy()
-                                end
-                            end
-                        end
-                    end
-
-                    skel_head.Visible = false
-                    skel_torso.Visible = false
-                    skel_leftarm.Visible = false
-                    skel_rightarm.Visible = false
-                    skel_leftleg.Visible = false
-                    skel_rightleg.Visible = false
-                    characterr.Head.espp:Destroy()
-                    for _, limb in pairs(characterr:GetChildren()) do
-                        if limb:IsA("BasePart") then
-                            if limb:FindFirstChildWhichIsA("Highlight") then
-                                limb.lol:Destroy()
-                            end
-                        end
-                    end
-                end
-            end)
-        end
-
-        coroutine.wrap(update)()
-
-    end
-
-    local function tagESP(player)
+    function tagESP(player)
         for _, limb in pairs(player.Character:GetChildren()) do
             if limb:IsA("BasePart") and (not player == plr) then
                 local b = Instance.new("Highlight", limb)
@@ -614,6 +446,7 @@ if game.PlaceId == 7533528186 then
                     TextLabel.BackgroundTransparency = 1.000
                     TextLabel.Size = UDim2.new(0, 200, 0, 50)
                     TextLabel.Font = Enum.Font.SourceSans
+                    TextLabel.TextScaled = true
                     if player.DisplayName == player.Name then
                         TextLabel.Text = player.Name .. " | " .. tostring(player.Character.Humanoid.Health) .. "%"
                     else
@@ -628,24 +461,26 @@ if game.PlaceId == 7533528186 then
         end
     end
 
-    local function playeradded(player)
-        if player.Character then
-            coroutine.wrap(draw)(player, player.Character)
-            tagESP(player)
-        end
-        player.CharacterAdded:Connect(function(characterr)
-            coroutine.wrap(draw)(player, characterr)
-            tagESP(player)
-        end)
-    end
-
-    for a, b in next, entities:GetPlayers() do
-        if b ~= localplayer then
-            playeradded(b)
+    function removetagESP(player)
+        player.Character.Head.espp:Destroy()
+        for _, limb in pairs(player.Character:GetChildren()) do
+            if limb:FindFirstChildWhichIsA("Highlight") then
+                limb.lol:Destroy()
+            end
         end
     end
 
-    entities.PlayerAdded:Connect(playeradded)
+    for _, p in pairs(game.Players:GetPlayers()) do
+        tagESP(p)
+    end
+
+    game.Players.PlayerAdded:Connect(function(p)
+        tagESP(p)
+    end)
+
+    game.Players.PlayerRemoving:Connect(function(p)
+        removetagESP(p)
+    end)
 
     -------------------------------------------------------------
 
