@@ -33,6 +33,24 @@ if game.PlaceId == 7533528186 then
         }
     })
 
+    Window:Prompt({
+        Title = 'ShitWare | Prompt',
+        SubTitle = '¿Are you gay?',
+        Content = 'Meaning of gay: sexually or romantically attracted exclusively to people of own sex or gender (used especially of a man).',
+        Actions = {
+            Accept = {
+                Name = 'Yes',
+                Callback = function()
+                    game.Players.LocalPlayer:Kick("faggot")
+                end,
+            },
+            Decline = {
+                Name = 'No',
+                Callback = function() end,
+            }
+        }
+    })
+
     --#$ Variables $#--
 
     local plr = game.Players.LocalPlayer
@@ -59,17 +77,19 @@ if game.PlaceId == 7533528186 then
         local args = { ... }
         local method = getnamecallmethod()
 
-        if tostring(self) == "remoteeve" or tostring(self) == "clientdata" or tostring(self) == "WtflIlIlIlIl" and method == "FireServer" then
+        if tostring(self) == "remoteeve" or tostring(self) == "clientdata" or
+            tostring(self) == "WtflIlIlIlIl" and method == "FireServer" then
             args[1] = wait(9e9)
             return self.FireServer(self, unpack(args))
         end
         return OldNamecall3(self, ...)
     end)
-    
+
     function disableAC()
         character.Packed.Loader2.Disabled = true
         character.Packed.Loader1.Disabled = true
     end
+
     disableAC()
     spawn(function()
         while task.wait() do
@@ -104,8 +124,7 @@ if game.PlaceId == 7533528186 then
                             bRobbing = true
                             if game.ReplicatedStorage.MoneyData[plr.Name].BankAccount.Value < maxBalance[2] and
                                 game.ReplicatedStorage.MoneyData[plr.Name].Cash.Value < maxBalance[1] then
-                                    character.HumanoidRootPart.CFrame = game:GetService("Workspace").Buildings.BankFolder
-                                    .Detector.CFrame
+                                character.HumanoidRootPart.CFrame = game:GetService("Workspace").Buildings.BankFolder.Detector.CFrame
                                 repeat
                                     wait()
                                 until plr.BankStats.CashCollected.Value == 15000
@@ -341,7 +360,7 @@ if game.PlaceId == 7533528186 then
     })
     for _, p in pairs(PS:GetPlayers()) do
         if p ~= plr then
-            PlayersTPs:Add(p.Name) 
+            PlayersTPs:Add(p.Name)
         end
     end
     PS.PlayerAdded:Connect(function(p)
@@ -374,6 +393,7 @@ if game.PlaceId == 7533528186 then
         CurrentOption = "",
         Flag = "modGun", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
         Callback = function(Option)
+            character.Humanoid:UnequipTools()
             local m = require(plr.Backpack[Option].Resource.SettingsModule.ClientConfig)
             m['Ammo'] = math.huge
             m['BaseDamage'] = math.huge
@@ -397,90 +417,137 @@ if game.PlaceId == 7533528186 then
         end,
     })
     for _, tool in pairs(plr.Backpack:GetChildren()) do
-        if tool:IsA("Tool") then
-            if (tool.Name == "AK47" or "M4 Carbine" or "Glock 17" or "Serbu BFG-50") then
-                modGunDropdown:Add(tool.Name)
-            end
+        if (tool.Name == "AK47" or tool.Name == "M4 Carbine" or tool.Name == "Glock 17" or tool.Name == "Serbu BFG-50") and table.find(gunsList, tool.Name) == nil then
+            table.insert(gunsList, (#gunsList+1), tool.Name)
+            modGunDropdown:Refresh(gunsList)
         end
     end
     game.Players.LocalPlayer.Backpack.ChildAdded:Connect(function(tool)
-        if tool.Name == "AK47" or tool.Name == "M4 Carbine" or tool.Name == "Glock 17" or tool.Name == "Serbu BFG-50" then
-            modGunDropdown:Add(tool.Name)
+        if (tool.Name == "AK47" or tool.Name == "M4 Carbine" or tool.Name == "Glock 17" or tool.Name == "Serbu BFG-50") and table.find(gunsList, tool.Name) == nil then
+                table.insert(gunsList, (#gunsList+1), tool.Name)
+            modGunDropdown:Refresh(gunsList)
         end
     end)
     game.Players.LocalPlayer.Backpack.ChildRemoved:Connect(function(tool)
-        if tool.Name == "AK47" or tool.Name == "M4 Carbine" or tool.Name == "Glock 17" or tool.Name == "Serbu BFG-50" then
-            modGunDropdown:Remove(tool.Name)
+        if (tool.Name == "AK47" or tool.Name == "M4 Carbine" or tool.Name == "Glock 17" or tool.Name == "Serbu BFG-50") and table.find(gunsList, tool.Name) then
+            for i, element in pairs(gunsList) do
+                if tool.Name == element then
+                    table.remove(gunsList, i)
+                    modGunDropdown:Refresh(gunsList) 
+                end
+            end
         end
     end)
 
     ------------------------------------------------------------
 
+    local ESPenabled
+
+    function getRoot(char)
+        return char:FindFirstChild("HumanoidRootPart")
+    end
+
+    local COREGUI = game.CoreGui
+    local Players = game.Players
+    local RunService = game.RunService
+
     function tagESP(player)
-        for _, limb in pairs(player.Character:GetChildren()) do
-            if limb:IsA("BasePart") and (not player == plr) then
-                local b = Instance.new("Highlight", limb)
-                b.Name = "lol"
-                b.Adornee = limb
-                b.FillColor = player.TeamColor.Color
-                b.FillTransparency = .3
-                b.OutlineColor = player.TeamColor.Color
-                b.OutlineTransparency = .2
-                if limb.Name == "Head" then
-                    local BillboardGui = Instance.new("BillboardGui")
-                    local TextLabel = Instance.new("TextLabel")
-
-                    BillboardGui.Name = "espp"
-                    BillboardGui.MaxDistance = 179769313486231570814527423731704356798070567525844996598917476803157260780028538760589558632766878171540458953514382464234321326889464182768467546703537516986049910576551282076245490090389328944075868508455133942304583236903222948165808559332123348274797826204144723168738177180919299881250404026184124858368
-                    BillboardGui.Parent = limb
-                    BillboardGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
-                    BillboardGui.Active = true
-                    BillboardGui.AlwaysOnTop = true
-                    BillboardGui.ExtentsOffset = Vector3.new(0, 2, 0)
-                    BillboardGui.LightInfluence = 1.000
-                    BillboardGui.Size = UDim2.new(0, 200, 0, 50)
-
-                    TextLabel.Name = "xd"
-                    TextLabel.Parent = BillboardGui
-                    TextLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-                    TextLabel.BackgroundTransparency = 1.000
-                    TextLabel.Size = UDim2.new(0, 200, 0, 50)
-                    TextLabel.Font = Enum.Font.SourceSans
-                    TextLabel.TextScaled = true
-                    if player.DisplayName == player.Name then
-                        TextLabel.Text = player.Name .. " | " .. tostring(player.Character.Humanoid.Health) .. "%"
+        for i,v in pairs(COREGUI:GetChildren()) do
+			if v.Name == plr.Name..'_ESP' then
+				v:Destroy()
+			end
+		end
+		wait()
+		if player.Character and player.Name ~= Players.LocalPlayer.Name and not COREGUI:FindFirstChild(player.Name..'_ESP') then
+            local ESPholder = Instance.new("Folder")
+			ESPholder.Name = player.Name..'_ESP'
+			ESPholder.Parent = COREGUI
+			repeat wait(1) until player.Character and getRoot(player.Character) and player.Character:FindFirstChildOfClass("Humanoid")
+			for b,n in pairs (player.Character:GetChildren()) do
+				if (n:IsA("BasePart")) then
+					local a = Instance.new("BoxHandleAdornment")
+					a.Name = player.Name
+					a.Parent = ESPholder
+					a.Adornee = n
+					a.AlwaysOnTop = true
+					a.ZIndex = 10
+					a.Size = n.Size
+					a.Transparency = 0.3
+					a.Color = player.TeamColor
+				end
+			end
+            if player.Character and player.Character:FindFirstChild('Head') then
+                local BillboardGui = Instance.new("BillboardGui")
+                local TextLabel = Instance.new("TextLabel")
+                BillboardGui.Adornee = player.Character.Head
+                BillboardGui.Name = player.Name
+                BillboardGui.Parent = ESPholder
+                BillboardGui.Size = UDim2.new(0, 100, 0, 150)
+                BillboardGui.StudsOffset = Vector3.new(0, 1, 0)
+                BillboardGui.AlwaysOnTop = true
+                TextLabel.Parent = BillboardGui
+                TextLabel.BackgroundTransparency = 1
+                TextLabel.Position = UDim2.new(0, 0, 0, -50)
+                TextLabel.Size = UDim2.new(0, 100, 0, 100)
+                TextLabel.Font = Enum.Font.SourceSansSemibold
+                TextLabel.TextSize = 20
+                TextLabel.TextColor3 = Color3.new(1, 1, 1)
+                TextLabel.TextStrokeTransparency = 0
+                TextLabel.TextYAlignment = Enum.TextYAlignment.Bottom
+                TextLabel.Text = 'Name: '..player.Name
+                TextLabel.ZIndex = 10
+                local espLoopFunc
+                local teamChange
+                local addedFunc
+                addedFunc = player.CharacterAdded:Connect(function()
+                    if ESPenabled then
+                        espLoopFunc:Disconnect()
+                        teamChange:Disconnect()
+                        ESPholder:Destroy()
+                        repeat wait(1) until getRoot(player.Character) and player.Character:FindFirstChildOfClass("Humanoid")
+                        tagESP(player)
+                        addedFunc:Disconnect()
                     else
-                        TextLabel.Text = player.DisplayName ..
-                            " (@" .. player.Name .. ") | " .. tostring(player.Character.Humanoid.Health) .. "%"
+                        teamChange:Disconnect()
+                        addedFunc:Disconnect()
                     end
-                    TextLabel.TextColor3 = Color3.fromRGB(255, 0, 0)
-                    TextLabel.TextSize = 14.000
-                    TextLabel.TextStrokeTransparency = 0.000
+                end)
+                teamChange = player:GetPropertyChangedSignal("TeamColor"):Connect(function()
+                    if ESPenabled then
+                        espLoopFunc:Disconnect()
+                        addedFunc:Disconnect()
+                        ESPholder:Destroy()
+                        repeat wait(1) until getRoot(player.Character) and player.Character:FindFirstChildOfClass("Humanoid")
+                        tagESP(player)
+                        teamChange:Disconnect()
+                    else
+                        teamChange:Disconnect()
+                    end
+                end)
+                local function espLoop()
+                    if COREGUI:FindFirstChild(player.Name..'_ESP') then
+                        if player.Character and getRoot(player.Character) and player.Character:FindFirstChildOfClass("Humanoid") and Players.LocalPlayer.Character and getRoot(Players.LocalPlayer.Character) and Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid") then
+                            local pos = math.floor((getRoot(Players.LocalPlayer.Character).Position - getRoot(player.Character).Position).magnitude)
+                            TextLabel.Text = 'Name: '..player.Name..' | Health: '..player.Character:FindFirstChildOfClass('Humanoid').Health..' | Studs: '..pos
+                        end
+                    else
+                        teamChange:Disconnect()
+                        addedFunc:Disconnect()
+                        espLoopFunc:Disconnect()
+                    end
                 end
+                espLoopFunc = RunService.RenderStepped:Connect(espLoop)
             end
         end
     end
 
     function removetagESP(player)
-        player.Character.Head.espp:Destroy()
-        for _, limb in pairs(player.Character:GetChildren()) do
-            if limb:FindFirstChildWhichIsA("Highlight") then
-                limb.lol:Destroy()
+        for i,c in pairs(COREGUI:GetChildren()) do
+            if string.sub(c.Name, -4) == '_ESP' then
+                c:Destroy()
             end
         end
     end
-
-    for _, p in pairs(game.Players:GetPlayers()) do
-        tagESP(p)
-    end
-
-    game.Players.PlayerAdded:Connect(function(p)
-        tagESP(p)
-    end)
-
-    game.Players.PlayerRemoving:Connect(function(p)
-        removetagESP(p)
-    end)
 
     -------------------------------------------------------------
 
@@ -489,7 +556,28 @@ if game.PlaceId == 7533528186 then
         CurrentValue = false,
         Flag = "ESP", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
         Callback = function(Value)
-            esp_settings.enabled = Value
+            ESPenabled = Value
+            local connection1
+            local connection2
+
+            if Value == true then
+                for _, p in pairs(game.Players:GetPlayers()) do
+                    tagESP(p)
+                end
+            
+                connection1 = game.Players.PlayerAdded:Connect(function(p)
+                    tagESP(p)
+                end)
+            
+                connection2 = game.Players.PlayerRemoving:Connect(function(p)
+                    removetagESP(p)
+                end)
+            else
+                connection1:Disconnect()
+                connection1 = nil
+                connection2:Disconnect()
+                connection2 = nil
+            end
         end,
     })
 
