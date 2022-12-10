@@ -101,8 +101,7 @@ if game.PlaceId == 7533528186 then
     end)
     character.Humanoid.Died:Connect(function()
         wait(game.Players.RespawnTime)
-        plr = game.Players.LocalPlayer
-        character = plr.Character or plr.CharacterAdded:Wait()
+        getchar()
     end)
 
     -------------------
@@ -181,19 +180,9 @@ if game.PlaceId == 7533528186 then
             if PS:FindFirstChild(Text) then
                 local p = PS:FindFirstChild(Text)
                 if p.DisplayName == p.Name then
-                    print("Stats about " ..
-                        p.Name ..
-                        "\nWallet: $" ..
-                        tostring(game.ReplicatedStorage.MoneyData[Text].Cash.Value) ..
-                        "\nBank: $" .. tostring(game.ReplicatedStorage.MoneyData[Text].BankAccount.Value))
+                    print("Stats about " ..p.Name .."\nWallet: $" ..tostring(game.ReplicatedStorage.MoneyData[Text].Cash.Value) .."\nBank: $" .. tostring(game.ReplicatedStorage.MoneyData[Text].BankAccount.Value))
                 else
-                    print("Stats about " ..
-                        p.DisplayName ..
-                        " ( @" ..
-                        Text ..
-                        " )\nWallet: $" ..
-                        tostring(game.ReplicatedStorage.MoneyData[Text].Cash.Value) ..
-                        "\nBank: $" .. tostring(game.ReplicatedStorage.MoneyData[Text].BankAccount.Value))
+                    print("Stats about " ..p.DisplayName .." ( @" ..Text .." )\nWallet: $" ..tostring(game.ReplicatedStorage.MoneyData[Text].Cash.Value) .."\nBank: $" .. tostring(game.ReplicatedStorage.MoneyData[Text].BankAccount.Value))
                 end
 
             end
@@ -210,8 +199,7 @@ if game.PlaceId == 7533528186 then
         RemoveTextAfterFocusLost = false,
         Callback = function(Text)
             if tonumber(game.ReplicatedStorage.MoneyData[plr.Name].Cash.Value) > tonumber(Text) then
-                game:GetService("ReplicatedStorage").MoneySystem:FireServer("ATM",
-                    { ["action"] = "deposit", ["amount"] = tonumber(Text) })
+                game:GetService("ReplicatedStorage").MoneySystem:FireServer("ATM",{ ["action"] = "deposit", ["amount"] = tonumber(Text) })
             end
         end,
     })
@@ -226,8 +214,7 @@ if game.PlaceId == 7533528186 then
         RemoveTextAfterFocusLost = false,
         Callback = function(Text)
             if tonumber(game.ReplicatedStorage.MoneyData[plr.Name].BankAccount.Value) > tonumber(Text) then
-                game:GetService("ReplicatedStorage").MoneySystem:FireServer("ATM",
-                    { ["action"] = "withdraw", ["amount"] = tonumber(Text) })
+                game:GetService("ReplicatedStorage").MoneySystem:FireServer("ATM",{ ["action"] = "withdraw", ["amount"] = tonumber(Text) })
             end
         end,
     })
@@ -248,100 +235,53 @@ if game.PlaceId == 7533528186 then
         Flag = "cityLocations", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
         Callback = function(Option)
             if Option == "Civ Spawn" then
-                character.HumanoidRootPart.CFrame = CFrame.new(-1173.93433, 5.88394547, -1880.65991, 1,
-                    8.36646841e-09,
-                    3.2875324e-14, -8.36646841e-09, 1, 4.62313281e-08, -3.24885315e-14, -4.62313281e-08, 1)
+                character.HumanoidRootPart.CFrame = CFrame.new(-1173.93433, 5.88394547, -1880.65991, 1,8.36646841e-09,3.2875324e-14, -8.36646841e-09, 1, 4.62313281e-08, -3.24885315e-14, -4.62313281e-08, 1)
             elseif Option == "Harmony Bank" then
-                character.HumanoidRootPart.CFrame = CFrame.new(31.5773354, 5.91323566, -356.561401, -0.978007615,
-                    -1.89580884e-08, 0.208569288, 3.93860278e-09, 1, 1.09364478e-07, -0.208569288, 1.07780764e-07,
-                    -0.978007615)
+                character.HumanoidRootPart.CFrame = CFrame.new(31.5773354, 5.91323566, -356.561401, -0.978007615,-1.89580884e-08, 0.208569288, 3.93860278e-09, 1, 1.09364478e-07, -0.208569288, 1.07780764e-07,-0.978007615)
             elseif Option == "Car DealerShip" then
-                character.HumanoidRootPart.CFrame = CFrame.new(-1210.17554, 5.27346802, -1918.92432, 1.28122911e-05,
-                    1.10993717e-07, -1, -8.48555981e-09, 1, 1.10993611e-07, 1, 8.48413784e-09, 1.28122911e-05)
+                character.HumanoidRootPart.CFrame = CFrame.new(-1210.17554, 5.27346802, -1918.92432, 1.28122911e-05,1.10993717e-07, -1, -8.48555981e-09, 1, 1.10993611e-07, 1, 8.48413784e-09, 1.28122911e-05)
             elseif Option == "MCSO Spawn" then
-                character.HumanoidRootPart.CFrame = CFrame.new(382.288818, 6.24014473, -2281.3103, 1, 3.74453357e-08
-                    ,
-                    -4.14666402e-14, -3.74453357e-08, 1, -2.88966007e-09, 4.13584369e-14, 2.88966007e-09, 1)
+                character.HumanoidRootPart.CFrame = CFrame.new(382.288818, 6.24014473, -2281.3103, 1, 3.74453357e-08,-4.14666402e-14, -3.74453357e-08, 1, -2.88966007e-09, 4.13584369e-14, 2.88966007e-09, 1)
             elseif Option == "PSP Spawn" then
-                character.HumanoidRootPart.CFrame = CFrame.new(-2731.01465, 19.3445129, -557.929138, 0.999382854,
-                    7.87512704e-08, -0.0351276472, -7.89161447e-08, 1, -3.30711614e-09, 0.0351276472, 6.0772134e-09,
-                    0.999382854)
+                character.HumanoidRootPart.CFrame = CFrame.new(-2731.01465, 19.3445129, -557.929138, 0.999382854,7.87512704e-08, -0.0351276472, -7.89161447e-08, 1, -3.30711614e-09, 0.0351276472, 6.0772134e-09,0.999382854)
             elseif Option == "Prisoners Spawn" then
-                character.HumanoidRootPart.CFrame = CFrame.new(-3322.72437, -43.3606415, 1017.85297, -0.173402622,
-                    -1.5545071e-08, 0.984851003, -3.87683841e-09, 1, 1.51015893e-08, -0.984851003, -1.19945309e-09,
-                    -0.173402622)
+                character.HumanoidRootPart.CFrame = CFrame.new(-3322.72437, -43.3606415, 1017.85297, -0.173402622,-1.5545071e-08, 0.984851003, -3.87683841e-09, 1, 1.51015893e-08, -0.984851003, -1.19945309e-09,-0.173402622)
             elseif Option == "CMPD Spawn" then
-                character.HumanoidRootPart.CFrame = CFrame.new(-598.078003, 5.92038918, 239.346771, 0.965884566,
-                    -1.51863355e-09, -0.258973002, 6.3851906e-09, 1, 1.79506117e-08, 0.258973002, -1.8991809e-08,
-                    0.965884566)
+                character.HumanoidRootPart.CFrame = CFrame.new(-598.078003, 5.92038918, 239.346771, 0.965884566,-1.51863355e-09, -0.258973002, 6.3851906e-09, 1, 1.79506117e-08, 0.258973002, -1.8991809e-08,0.965884566)
             elseif Option == "MCFD Spawn" then
-                character.HumanoidRootPart.CFrame = CFrame.new(-1215.02686, 5.1999979, -1513.53711, 1,
-                    -9.05407305e-09,
-                    -3.94508602e-15, 9.05407305e-09, 1, 1.1324002e-07, 2.9198024e-15, -1.1324002e-07, 1)
+                character.HumanoidRootPart.CFrame = CFrame.new(-1215.02686, 5.1999979, -1513.53711, 1,-9.05407305e-09,-3.94508602e-15, 9.05407305e-09, 1, 1.1324002e-07, 2.9198024e-15, -1.1324002e-07, 1)
             elseif Option == "DOT Spawn" then
-                character.HumanoidRootPart.CFrame = CFrame.new(-1203.50549, 5.36495876, -1677.8064, 1, 5.4062661e-09
-                    ,
-                    -3.78522676e-15, -5.4062661e-09, 1, -6.76176128e-08, 3.41966788e-15, 6.76176128e-08, 1)
+                character.HumanoidRootPart.CFrame = CFrame.new(-1203.50549, 5.36495876, -1677.8064, 1, 5.4062661e-09,-3.78522676e-15, -5.4062661e-09, 1, -6.76176128e-08, 3.41966788e-15, 6.76176128e-08, 1)
             elseif Option == "Army Spawn" then
-                character.HumanoidRootPart.CFrame = CFrame.new(-1831.17102, 5.30218697, 2344.15625, 1, -
-                    9.2644088e-09,
-                    -4.07671621e-15, 9.2644088e-09, 1, 1.15873256e-07, 3.00321905e-15, -1.15873256e-07, 1)
+                character.HumanoidRootPart.CFrame = CFrame.new(-1831.17102, 5.30218697, 2344.15625, 1, -9.2644088e-09,-4.07671621e-15, 9.2644088e-09, 1, 1.15873256e-07, 3.00321905e-15, -1.15873256e-07, 1)
             elseif Option == "Soel's Guns & Ammo" then
-                character.HumanoidRootPart.CFrame = CFrame.new(-309.382355, 5.8839426, -135.703949, 0.998898745,
-                    2.65400839e-08, 0.0469181463, -2.72317511e-08, 1, 1.41027954e-08, -0.0469181463, -1.53649271e-08,
-                    0.998898745)
+                character.HumanoidRootPart.CFrame = CFrame.new(-309.382355, 5.8839426, -135.703949, 0.998898745,2.65400839e-08, 0.0469181463, -2.72317511e-08, 1, 1.41027954e-08, -0.0469181463, -1.53649271e-08,0.998898745)
             elseif Option == "Casino" then
-                character.HumanoidRootPart.CFrame = CFrame.new(143.98848, 5.88394356, 18.0760098, 0.0201089773,
-                    -2.57470525e-08, -0.999797821, 5.29057189e-08, 1, -2.46881644e-08, 0.999797821, -5.23985655e-08,
-                    0.0201089773)
+                character.HumanoidRootPart.CFrame = CFrame.new(143.98848, 5.88394356, 18.0760098, 0.0201089773,-2.57470525e-08, -0.999797821, 5.29057189e-08, 1, -2.46881644e-08, 0.999797821, -5.23985655e-08,0.0201089773)
             elseif Option == "Philly Hospital" then
-                character.HumanoidRootPart.CFrame = CFrame.new(-1001.57166, 5.88399792, 123.13372, 0.0152309462,
-                    3.86254619e-08, 0.999884009, -8.09245222e-08, 1, -3.73972426e-08, -0.999884009, -8.03455364e-08,
-                    0.0152309462)
+                character.HumanoidRootPart.CFrame = CFrame.new(-1001.57166, 5.88399792, 123.13372, 0.0152309462,3.86254619e-08, 0.999884009, -8.09245222e-08, 1, -3.73972426e-08, -0.999884009, -8.03455364e-08,0.0152309462)
             elseif Option == "Jewelry (INSIDE)" then
-                character.HumanoidRootPart.CFrame = CFrame.new(-537.246643, 6.03827095, -853.070435, -0.830620885,
-                    7.37640136e-08, 0.556838393, 6.01162355e-08, 1, -4.27955662e-08, -0.556838393, -2.07186468e-09,
-                    -0.830620885)
+                character.HumanoidRootPart.CFrame = CFrame.new(-537.246643, 6.03827095, -853.070435, -0.830620885,7.37640136e-08, 0.556838393, 6.01162355e-08, 1, -4.27955662e-08, -0.556838393, -2.07186468e-09,-0.830620885)
             elseif Option == "Jewelry (OUTSIDE)" then
-                character.HumanoidRootPart.CFrame = CFrame.new(-561.167053, 5.88394451, -854.050842, 0.0213721693,
-                    5.21850581e-08, 0.999771595, 2.09134416e-08, 1, -5.26440473e-08, -0.999771595, 2.2033781e-08,
-                    0.0213721693)
+                character.HumanoidRootPart.CFrame = CFrame.new(-561.167053, 5.88394451, -854.050842, 0.0213721693,5.21850581e-08, 0.999771595, 2.09134416e-08, 1, -5.26440473e-08, -0.999771595, 2.2033781e-08,0.0213721693)
             elseif Option == "Los pollos hermanos" then
-                character.HumanoidRootPart.CFrame = CFrame.new(-116.03347, 5.88399887, -274.641907, -0.0196507238,
-                    9.51928314e-08, 0.999806881, 2.66311257e-08, 1, -9.46877989e-08, -0.999806881, 2.47652991e-08,
-                    -0.0196507238)
+                character.HumanoidRootPart.CFrame = CFrame.new(-116.03347, 5.88399887, -274.641907, -0.0196507238,9.51928314e-08, 0.999806881, 2.66311257e-08, 1, -9.46877989e-08, -0.999806881, 2.47652991e-08,-0.0196507238)
             elseif Option == "Big Bros (OUTSIDE)" then
-                character.HumanoidRootPart.CFrame = CFrame.new(-572.559998, 5.8839426, -97.0449829, 0.023679141,
-                    1.19046923e-08, 0.99971962, 1.91857303e-08, 1, -1.23624604e-08, -0.99971962, 1.94730827e-08,
-                    0.023679141)
+                character.HumanoidRootPart.CFrame = CFrame.new(-572.559998, 5.8839426, -97.0449829, 0.023679141,1.19046923e-08, 0.99971962, 1.91857303e-08, 1, -1.23624604e-08, -0.99971962, 1.94730827e-08,0.023679141)
             elseif Option == "Big Bros (ROOF)" then
-                character.HumanoidRootPart.CFrame = CFrame.new(-510.76825, 236.250916, -228.591446, 0.446605772,
-                    2.39485249e-08, 0.894730866, 3.44310465e-08, 1, -4.39524683e-08, -0.894730866, 5.04359434e-08,
-                    0.446605772)
+                character.HumanoidRootPart.CFrame = CFrame.new(-510.76825, 236.250916, -228.591446, 0.446605772,2.39485249e-08, 0.894730866, 3.44310465e-08, 1, -4.39524683e-08, -0.894730866, 5.04359434e-08,0.446605772)
             elseif Option == "Philly Shooting Club" then
-                character.HumanoidRootPart.CFrame = CFrame.new(-450.95224, 5.88394356, -571.02179, 0.0151820518,
-                    -2.80393078e-08, -0.999884725, 4.91787198e-08, 1, -2.72958189e-08, 0.999884725, -4.87586469e-08,
-                    0.0151820518)
+                character.HumanoidRootPart.CFrame = CFrame.new(-450.95224, 5.88394356, -571.02179, 0.0151820518,-2.80393078e-08, -0.999884725, 4.91787198e-08, 1, -2.72958189e-08, 0.999884725, -4.87586469e-08,0.0151820518)
             elseif Option == "Philly Paint Shop" then
-                character.HumanoidRootPart.CFrame = CFrame.new(-2778.39771, 5.32951736, 453.593018, 0.0230581202,
-                    -2.65987765e-08, -0.999734104, 9.58970858e-09, 1, -2.63846704e-08, 0.999734104, -8.97877861e-09,
-                    0.0230581202)
+                character.HumanoidRootPart.CFrame = CFrame.new(-2778.39771, 5.32951736, 453.593018, 0.0230581202,-2.65987765e-08, -0.999734104, 9.58970858e-09, 1, -2.63846704e-08, 0.999734104, -8.97877861e-09,0.0230581202)
             elseif Option == "Pawn Shop" then
-                character.HumanoidRootPart.CFrame = CFrame.new(-2708.92627, 6.1139698, 355.354126, 0.992190361,
-                    6.5075632e-08, -0.12473283, -6.73238105e-08, 1, -1.3808755e-08, 0.12473283, 2.20984031e-08,
-                    0.992190361)
+                character.HumanoidRootPart.CFrame = CFrame.new(-2708.92627, 6.1139698, 355.354126, 0.992190361,6.5075632e-08, -0.12473283, -6.73238105e-08, 1, -1.3808755e-08, 0.12473283, 2.20984031e-08,0.992190361)
             elseif Option == "PPD Station" then
-                character.HumanoidRootPart.CFrame = CFrame.new(-598.20636, 5.92038822, 194.76738, 0.229997218,
-                    -1.06730241e-07, 0.973191261, 5.1633533e-09, 1, 1.08450088e-07, -0.973191261, -1.99182892e-08,
-                    0.229997218)
+                character.HumanoidRootPart.CFrame = CFrame.new(-598.20636, 5.92038822, 194.76738, 0.229997218,-1.06730241e-07, 0.973191261, 5.1633533e-09, 1, 1.08450088e-07, -0.973191261, -1.99182892e-08,0.229997218)
             elseif Option == "PSP Station" then
-                character.HumanoidRootPart.CFrame = CFrame.new(-598.20636, 5.92038822, 194.76738, 0.229997218,
-                    -1.06730241e-07, 0.973191261, 5.1633533e-09, 1, 1.08450088e-07, -0.973191261, -1.99182892e-08,
-                    0.229997218)
+                character.HumanoidRootPart.CFrame = CFrame.new(-598.20636, 5.92038822, 194.76738, 0.229997218,-1.06730241e-07, 0.973191261, 5.1633533e-09, 1, 1.08450088e-07, -0.973191261, -1.99182892e-08,0.229997218)
             elseif Option == "Capitol (INSIDE)" then
-                character.HumanoidRootPart.CFrame = CFrame.new(-598.20636, 5.92038822, 194.76738, 0.229997218,
-                    -1.06730241e-07, 0.973191261, 5.1633533e-09, 1, 1.08450088e-07, -0.973191261, -1.99182892e-08,
-                    0.229997218)
+                character.HumanoidRootPart.CFrame = CFrame.new(-598.20636, 5.92038822, 194.76738, 0.229997218,-1.06730241e-07, 0.973191261, 5.1633533e-09, 1, 1.08450088e-07, -0.973191261, -1.99182892e-08,0.229997218)
             end
         end,
     })
@@ -417,25 +357,18 @@ if game.PlaceId == 7533528186 then
         end,
     })
     for _, tool in pairs(plr.Backpack:GetChildren()) do
-        if (tool.Name == "AK47" or tool.Name == "M4 Carbine" or tool.Name == "Glock 17" or tool.Name == "Serbu BFG-50") and not table.find(gunsList, tool.Name) then
-            table.insert(gunsList, tool.Name)
-            modGunDropdown:Refresh(gunsList)
+        if (tool.Name == "AK47" or tool.Name == "M4 Carbine" or tool.Name == "Glock 17" or tool.Name == "Serbu BFG-50") then
+            modGunDropdown:Add(tool.Name)
         end
     end
     game.Players.LocalPlayer.Backpack.ChildAdded:Connect(function(tool)
-        if (tool.Name == "AK47" or tool.Name == "M4 Carbine" or tool.Name == "Glock 17" or tool.Name == "Serbu BFG-50") and not table.find(gunsList, tool.Name) then
-            table.insert(gunsList, tool.Name)
-            modGunDropdown:Refresh(gunsList)
+        if (tool.Name == "AK47" or tool.Name == "M4 Carbine" or tool.Name == "Glock 17" or tool.Name == "Serbu BFG-50") then
+            modGunDropdown:Add(tool.Name)
         end
     end)
     game.Players.LocalPlayer.Backpack.ChildRemoved:Connect(function(tool)
-        if (tool.Name == "AK47" or tool.Name == "M4 Carbine" or tool.Name == "Glock 17" or tool.Name == "Serbu BFG-50") and table.find(gunsList, tool.Name) then
-            for i, element in pairs(gunsList) do
-                if tool.Name == element then
-                    table.remove(gunsList, i)
-                    modGunDropdown:Refresh(gunsList) 
-                end
-            end
+        if (tool.Name == "AK47" or tool.Name == "M4 Carbine" or tool.Name == "Glock 17" or tool.Name == "Serbu BFG-50") then
+            modGunDropdown:Remove(tool.Name)
         end
     end)
 
