@@ -417,14 +417,14 @@ if game.PlaceId == 7533528186 then
         end,
     })
     for _, tool in pairs(plr.Backpack:GetChildren()) do
-        if (tool.Name == "AK47" or tool.Name == "M4 Carbine" or tool.Name == "Glock 17" or tool.Name == "Serbu BFG-50") and table.find(gunsList, tool.Name) == nil then
-            table.insert(gunsList, (#gunsList+1), tool.Name)
+        if (tool.Name == "AK47" or tool.Name == "M4 Carbine" or tool.Name == "Glock 17" or tool.Name == "Serbu BFG-50") and not table.find(gunsList, tool.Name) then
+            table.insert(gunsList, tool.Name)
             modGunDropdown:Refresh(gunsList)
         end
     end
     game.Players.LocalPlayer.Backpack.ChildAdded:Connect(function(tool)
-        if (tool.Name == "AK47" or tool.Name == "M4 Carbine" or tool.Name == "Glock 17" or tool.Name == "Serbu BFG-50") and table.find(gunsList, tool.Name) == nil then
-                table.insert(gunsList, (#gunsList+1), tool.Name)
+        if (tool.Name == "AK47" or tool.Name == "M4 Carbine" or tool.Name == "Glock 17" or tool.Name == "Serbu BFG-50") and not table.find(gunsList, tool.Name) then
+            table.insert(gunsList, tool.Name)
             modGunDropdown:Refresh(gunsList)
         end
     end)
@@ -758,6 +758,29 @@ if game.PlaceId == 7533528186 then
                         fb_connection = nil
                     end
                     game.Lighting.ClockTime = 12
+                end)
+            end
+        end,
+    })
+
+    local phonetoggled = false
+    local phone_connection = nil
+
+    local devicetoggle = lpTab:CreateToggle({
+        Name = "Disguise as a phone player",
+        Info = "Will make your nametag display that your on phone", -- Speaks for itself, Remove if none.
+        CurrentValue = false,
+        Flag = "phone", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+        Callback = function(Value)
+            phonetoggled = Value
+
+            if Value == true then
+                phone_connection = game:GetService("RunService").RenderStepped:Connect(function()
+                    if phonetoggled == false then
+                        phone_connection:Disconnect()
+                        phone_connection = nil
+                    end
+                    game.ReplicatedStorage.NameTagStuff:WaitForChild("Device"):FireServer("mobile")
                 end)
             end
         end,
