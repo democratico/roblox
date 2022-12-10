@@ -99,10 +99,6 @@ if game.PlaceId == 7533528186 then
             getchar()
         end
     end)
-    character.Humanoid.Died:Connect(function()
-        wait(game.Players.RespawnTime)
-        getchar()
-    end)
 
     -------------------
 
@@ -370,6 +366,25 @@ if game.PlaceId == 7533528186 then
         if (tool.Name == "AK47" or tool.Name == "M4 Carbine" or tool.Name == "Glock 17" or tool.Name == "Serbu BFG-50") then
             modGunDropdown:Remove(tool.Name)
         end
+    end)
+    character.Humanoid.Died:Connect(function()
+        wait(game.Players.RespawnTime)
+        getchar()
+        for _, tool in pairs(plr.Backpack:GetChildren()) do
+            if (tool.Name == "AK47" or tool.Name == "M4 Carbine" or tool.Name == "Glock 17" or tool.Name == "Serbu BFG-50") then
+                modGunDropdown:Add(tool.Name)
+            end
+        end
+        game.Players.LocalPlayer.Backpack.ChildAdded:Connect(function(tool)
+            if (tool.Name == "AK47" or tool.Name == "M4 Carbine" or tool.Name == "Glock 17" or tool.Name == "Serbu BFG-50") then
+                modGunDropdown:Add(tool.Name)
+            end
+        end)
+        game.Players.LocalPlayer.Backpack.ChildRemoved:Connect(function(tool)
+            if (tool.Name == "AK47" or tool.Name == "M4 Carbine" or tool.Name == "Glock 17" or tool.Name == "Serbu BFG-50") then
+                modGunDropdown:Remove(tool.Name)
+            end
+        end)
     end)
 
     ------------------------------------------------------------
