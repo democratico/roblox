@@ -6,6 +6,7 @@ if game.PlaceId == 7533528186 then
 
     --local Rayfield = loadstring(game:HttpGet('https://raw.githubusercontent.com/shlexware/Rayfield/main/source'))()
     local Rayfield = loadstring(game:HttpGet('https://raw.githubusercontent.com/UI-Interface/CustomFIeld/main/RayField.lua'))()
+    --local Rayfield = loadstring(game:HttpGet('https://raw.githubusercontent.com/imvipp/roblox/main/shitware/rayfield_UILIB.lua'))()
 
     local Window = Rayfield:CreateWindow({
         Name = "ShitWare // Pennsylvania",
@@ -219,6 +220,7 @@ if game.PlaceId == 7533528186 then
 
     local TPTab = Window:CreateTab("Teleports", 4483362458)
     local TPSection = TPTab:CreateSection("Teleports")
+
     local CityTPs_Dropdown = TPTab:CreateDropdown({
         Name = "City locations",
         Options = { "Civ Spawn", "Harmony Bank", "Car DealerShip", "MCSO Spawn", "PSP Spawn", "Prisoners Spawn",
@@ -286,7 +288,7 @@ if game.PlaceId == 7533528186 then
     local PS = game:GetService("Players")
     local PLIST = {}
     local PlayersTPs = TPTab:CreateDropdown({
-        Name = "Teleport to players",
+        Name = "Teleport to player",
         Options = PLIST,
         CurrentOption = "",
         Flag = "pTPs", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
@@ -294,16 +296,37 @@ if game.PlaceId == 7533528186 then
             character.HumanoidRootPart.CFrame = PS[Option].Character.HumanoidRootPart.CFrame
         end,
     })
+
+    local spectatePlrsDropdown = TPTab:CreateDropdown({
+        Name = "Spectate player",
+        Options = PLIST,
+        CurrentOption = "",
+        Flag = "specPlr", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+        Callback = function(Option)
+            game.Workspace.Camera.CameraSubject = game.Players[Option].Character.Humanoid
+        end,
+    })
+    local spectateYourself = TPTab:CreateButton({
+        Name = "Stop spectating",
+        Interact = 'Click',
+        Callback = function()
+            game.Workspace.Camera.CameraSubject = character.Humanoid
+        end,
+     })
+
     for _, p in pairs(PS:GetPlayers()) do
         if p ~= plr then
             PlayersTPs:Add(p.Name)
+            spectatePlrsDropdown:Add(p.Name)
         end
     end
     PS.PlayerAdded:Connect(function(p)
         PlayersTPs:Add(p.Name)
+        spectatePlrsDropdown:Add(p.Name)
     end)
     PS.PlayerRemoving:Connect(function(p)
         PlayersTPs:Remove(p.Name)
+        spectatePlrsDropdown:Remove(p.Name)
     end)
 
     local Keybind = TPTab:CreateKeybind({
@@ -367,24 +390,27 @@ if game.PlaceId == 7533528186 then
             modGunDropdown:Remove(tool.Name)
         end
     end)
-    character.Humanoid.Died:Connect(function()
-        wait(game.Players.RespawnTime)
-        getchar()
-        for _, tool in pairs(plr.Backpack:GetChildren()) do
-            if (tool.Name == "AK47" or tool.Name == "M4 Carbine" or tool.Name == "Glock 17" or tool.Name == "Serbu BFG-50") then
-                modGunDropdown:Add(tool.Name)
+
+    spawn(function()
+        if character.Humanoid.Health == 0 then
+            wait(game.Players.RespawnTime)
+            getchar()
+            for _, tool in pairs(plr.Backpack:GetChildren()) do
+                if (tool.Name == "AK47" or tool.Name == "M4 Carbine" or tool.Name == "Glock 17" or tool.Name == "Serbu BFG-50") then
+                    modGunDropdown:Add(tool.Name)
+                end
             end
+            game.Players.LocalPlayer.Backpack.ChildAdded:Connect(function(tool)
+                if (tool.Name == "AK47" or tool.Name == "M4 Carbine" or tool.Name == "Glock 17" or tool.Name == "Serbu BFG-50") then
+                    modGunDropdown:Add(tool.Name)
+                end
+            end)
+            game.Players.LocalPlayer.Backpack.ChildRemoved:Connect(function(tool)
+                if (tool.Name == "AK47" or tool.Name == "M4 Carbine" or tool.Name == "Glock 17" or tool.Name == "Serbu BFG-50") then
+                    modGunDropdown:Remove(tool.Name)
+                end
+            end)
         end
-        game.Players.LocalPlayer.Backpack.ChildAdded:Connect(function(tool)
-            if (tool.Name == "AK47" or tool.Name == "M4 Carbine" or tool.Name == "Glock 17" or tool.Name == "Serbu BFG-50") then
-                modGunDropdown:Add(tool.Name)
-            end
-        end)
-        game.Players.LocalPlayer.Backpack.ChildRemoved:Connect(function(tool)
-            if (tool.Name == "AK47" or tool.Name == "M4 Carbine" or tool.Name == "Glock 17" or tool.Name == "Serbu BFG-50") then
-                modGunDropdown:Remove(tool.Name)
-            end
-        end)
     end)
 
     ------------------------------------------------------------
@@ -606,6 +632,72 @@ if game.PlaceId == 7533528186 then
         end,
     })
 
+    function playAnim(animID, speed, status)
+        local Anim = Instance.new("Animation")
+        Anim.AnimationId = "rbxassetid://"..animID
+        local playerAnimHum = game.Players.LocalPlayer.Character.Humanoid:WaitForChild("Animator"):LoadAnimation(Anim)
+        playerAnimHum:Play()
+        playerAnimHum:AdjustSpeed(speed)
+    
+        if status then
+            playerAnimHum:Stop()
+        end
+    end
+
+    local animOptions = {
+        "Scream",
+        "Barrel roll",
+        "Scared",
+        "Head off",
+        "Dab",
+        "Crouch",
+        "Lay down",
+        "Loop head",
+        "Head throw",
+        "Rapid arm"
+    }
+
+    local animsDropdown = lpTab:CreateDropdown({
+        Name = "Play animation",
+        Options = animOptions,
+        CurrentOption = "",
+        Flag = "anim", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+        Callback = function(option)
+            if option == "Scream" then
+                playAnim(180611870, 1, false)
+            elseif option == "Barrel roll" then
+                playAnim(136801964, 1, false)
+            elseif option == "Scared" then
+                playAnim(180612465, 1, false)
+            elseif option == "Head off" then
+                playAnim(121572214, 1, false)
+            elseif option == "Dab" then
+                playAnim(248263260, 1, false)
+            elseif option == "Crouch" then
+                playAnim(182724289, 1, false)
+            elseif option == "Lay down" then
+                playAnim(282574440, 1, false)
+            elseif option == "Loop head" then
+                playAnim(35154961, 640, false)
+            elseif option == "Head throw" then
+                playAnim(35154961, 1, false)
+            elseif option == "Rapid arm" then
+                playAnim(259438880, 100, false)
+            end  
+        end,
+    })
+
+    local stopanimButton = lpTab:CreateButton({
+        Name = "Stop animation",
+        Interact = 'Click',
+        Callback = function()
+            --for _, anim in pairs(character.Humanoid:FindFirstChild("Animator"):GetPlayingAnimationTracks()) do
+            --    anim:Stop()
+            --end
+            --playAnim(0,1,false)
+        end,
+    })
+
     local infstamina = lpTab:CreateToggle({
         Name = "Infinite Stamina",
         CurrentValue = false,
@@ -734,5 +826,42 @@ if game.PlaceId == 7533528186 then
         end,
     })
 
-    -- to be done: view players, animations, noclip, radio logger
+    local nocliptoggled = false
+    local noclip_connection = nil
+
+    local nocliptoggle = lpTab:CreateToggle({
+        Name = "Noclip",
+        Info = "Will let you walk through walls", -- Speaks for itself, Remove if none.
+        CurrentValue = false,
+        Flag = "noclip", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+        Callback = function(Value)
+            nocliptoggled = Value
+
+            if Value == true then
+                noclip_connection = game:GetService("RunService").RenderStepped:Connect(function()
+                    if nocliptoggled == false then
+                        noclip_connection:Disconnect()
+                        noclip_connection = nil
+                        local speaker = game.Players.LocalPlayer
+                        if speaker.Character ~= nil then
+                            for _, child in pairs(speaker.Character:GetDescendants()) do
+                                if child:IsA("BasePart") and child.CanCollide == false then
+                                    child.CanCollide = true
+                                end
+                            end
+                        end
+                    end
+                    local speaker = game.Players.LocalPlayer
+                    if speaker.Character ~= nil then
+                        for _, child in pairs(speaker.Character:GetDescendants()) do
+                            if child:IsA("BasePart") and child.CanCollide == true then
+                                child.CanCollide = false
+                            end
+                        end
+                    end
+                end)
+            end
+        end,
+    })
+    -- to be done: radio logger
 end
