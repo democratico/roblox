@@ -751,7 +751,7 @@ function Unhide()
 				TweenService:Create(tabbtn.Title, TweenInfo.new(0.3, Enum.EasingStyle.Quint), {TextTransparency = 0.2}):Play()
 				TweenService:Create(tabbtn.UIStroke, TweenInfo.new(0.3, Enum.EasingStyle.Quint), {Transparency = 0}):Play()
 			end
-			
+
 		end
 	end
 	for _, tab in ipairs(Elements:GetChildren()) do
@@ -767,7 +767,7 @@ function Unhide()
 							TweenService:Create(element.Title, TweenInfo.new(0.3, Enum.EasingStyle.Quint), {TextTransparency = 0}):Play()
 						end
 						for _, child in ipairs(element:GetChildren()) do
-							if child.ClassName == "Frame" or child.ClassName == "TextLabel" or child.ClassName == "TextBox" or child.ClassName == "ImageButton" or child.ClassName == "ImageLabel" then
+							if child.Name ~= 'Description' and (child.ClassName == "Frame" or child.ClassName == "TextLabel" or child.ClassName == "TextBox" or child.ClassName == "ImageButton" or child.ClassName == "ImageLabel") then
 								child.Visible = true
 							end
 						end
@@ -780,7 +780,6 @@ function Unhide()
 	Minimised = false
 	Debounce = false
 end
-
 function CloseSearch()
 	Debounce = true
 	TweenService:Create(SearchBar, TweenInfo.new(0.4, Enum.EasingStyle.Quint), {BackgroundTransparency = 1,Size = UDim2.new(0, 460,0, 35)}):Play()
@@ -868,7 +867,7 @@ function Maximise()
 							TweenService:Create(element.Title, TweenInfo.new(0.3, Enum.EasingStyle.Quint), {TextTransparency = 0}):Play()
 						end
 						for _, child in ipairs(element:GetChildren()) do
-							if child.Name ~= 'Description' and (child.ClassName == "Frame" or child.ClassName == "TextLabel" or child.ClassName == "TextBox" or child.ClassName == "ImageButton" or child.ClassName == "ImageLabel") then
+							if child.ClassName == "Frame" or child.ClassName == "TextLabel" or child.ClassName == "TextBox" or child.ClassName == "ImageButton" or child.ClassName == "ImageLabel" then
 								child.Visible = true
 							end
 						end
@@ -896,7 +895,7 @@ function Maximise()
 				TweenService:Create(tabbtn.Title, TweenInfo.new(0.3, Enum.EasingStyle.Quint), {TextTransparency = 0.2}):Play()
 				TweenService:Create(tabbtn.UIStroke, TweenInfo.new(0.3, Enum.EasingStyle.Quint), {Transparency = 0}):Play()
 			end
-
+			
 		end
 	end
 
@@ -2552,7 +2551,6 @@ Topbar.Search.MouseButton1Click:Connect(function()
 		CloseSearch()
 	end
 end)
-
 Topbar.Hide.MouseButton1Click:Connect(function()
 	if Debounce then return end
 	if Hidden then
@@ -2567,7 +2565,7 @@ Topbar.Hide.MouseButton1Click:Connect(function()
 end)
 
 UserInputService.InputBegan:Connect(function(input, processed)
-	if (input.KeyCode == Enum.KeyCode.RightShift and not processed) then
+	if (input.KeyCode == Enum.KeyCode.F5 and not processed) then
 		if Debounce then return end
 		if Hidden then
 			Hidden = false
