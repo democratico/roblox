@@ -5,8 +5,8 @@ if game.PlaceId == 7533528186 then
     getgenv().SecureMode = true
 
     --local Rayfield = loadstring(game:HttpGet('https://raw.githubusercontent.com/shlexware/Rayfield/main/source'))()
-    local Rayfield = loadstring(game:HttpGet('https://raw.githubusercontent.com/UI-Interface/CustomFIeld/main/RayField.lua'))()
-    --local Rayfield = loadstring(game:HttpGet('https://raw.githubusercontent.com/imvipp/roblox/main/shitware/rayfield_UILIB.lua'))()
+    --local Rayfield = loadstring(game:HttpGet('https://raw.githubusercontent.com/UI-Interface/CustomFIeld/main/RayField.lua'))()
+    local Rayfield = loadstring(game:HttpGet('https://raw.githubusercontent.com/imvipp/roblox/main/shitware/rayfield_UILIB.lua'))()
 
     local Window = Rayfield:CreateWindow({
         Name = "ShitWare // Pennsylvania",
