@@ -376,46 +376,28 @@ if game.PlaceId == 7533528186 then
         end,
     })
     for _, tool in pairs(plr.Backpack:GetChildren()) do
-        if (tool.Name == "AK47" or tool.Name == "M4 Carbine" or tool.Name == "Glock 17" or tool.Name == "Serbu BFG-50") and not table.find(gunsList,tool.Name) then
-            table.insert(gunsList,tool.Name)
-
-            modGunDropdown:Refresh(gunsList)
+        if tool.Name == "AK47" or tool.Name == "M4 Carbine" or tool.Name == "Glock 17" or tool.Name == "Serbu BFG-50" then
+            modGunDropdown:Add(tool.Name)
         end
     end
     game.Players.LocalPlayer.Backpack.ChildAdded:Connect(function(tool)
-        if (tool.Name == "AK47" or tool.Name == "M4 Carbine" or tool.Name == "Glock 17" or tool.Name == "Serbu BFG-50") and not table.find(gunsList,tool.Name) then
-            table.insert(gunsList,tool.Name)
-
-            modGunDropdown:Refresh(gunsList)
-        end
+        modGunDropdown:Add(tool.Name)
     end)
     game.Players.LocalPlayer.Backpack.ChildRemoved:Connect(function(tool)
-        if (tool.Name == "AK47" or tool.Name == "M4 Carbine" or tool.Name == "Glock 17" or tool.Name == "Serbu BFG-50") and table.find(gunsList,tool.Name) then
-            for i,v in pairs(gunsList) do
-                if v == tool.Name then
-                    table.remove(gunsList,i)
-                    modGunDropdown:Refresh(gunsList)
-                end
-            end
+        if tool.Name == "AK47" or tool.Name == "M4 Carbine" or tool.Name == "Glock 17" or tool.Name == "Serbu BFG-50" then
+            modGunDropdown:Remove(tool.Name)
         end
     end)
     game.Players.LocalPlayer.ChildAdded:Connect(function(child)
         if child.Name == "Backpack" then
             game.Players.LocalPlayer.Backpack.ChildAdded:Connect(function(tool)
-                if (tool.Name == "AK47" or tool.Name == "M4 Carbine" or tool.Name == "Glock 17" or tool.Name == "Serbu BFG-50") and not table.find(gunsList,tool.Name) then
-                    table.insert(gunsList,tool.Name)
-        
-                    modGunDropdown:Refresh(gunsList)
+                if tool.Name == "AK47" or tool.Name == "M4 Carbine" or tool.Name == "Glock 17" or tool.Name == "Serbu BFG-50" then
+                    modGunDropdown:Add(tool.Name)
                 end
             end)
             game.Players.LocalPlayer.Backpack.ChildRemoved:Connect(function(tool)
-                if (tool.Name == "AK47" or tool.Name == "M4 Carbine" or tool.Name == "Glock 17" or tool.Name == "Serbu BFG-50") and table.find(gunsList,tool.Name) then
-                    for i,v in pairs(gunsList) do
-                        if v == tool.Name then
-                            table.remove(gunsList,i)
-                            modGunDropdown:Refresh(gunsList)
-                        end
-                    end
+                if tool.Name == "AK47" or tool.Name == "M4 Carbine" or tool.Name == "Glock 17" or tool.Name == "Serbu BFG-50" then
+                    modGunDropdown:Remove(tool.Name)
                 end
             end)
         end
