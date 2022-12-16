@@ -86,6 +86,8 @@ if game.PlaceId == 7533528186 then
         return OldNamecall3(self, ...)
     end)
 
+    game:GetService("Workspace").Billboards["Gamepass Board3"].w["Radio Music"].Music.Playing = false
+
     function disableAC()
         game:GetService("Players").LocalPlayer.Backpack.LocalScript.Disabled = true
         game.Players.LocalPlayer.Character.Packed.Loader2.Disabled = true
@@ -874,7 +876,7 @@ if game.PlaceId == 7533528186 then
         Name = "Delete snow",
         Info = "Will let you walk through walls", -- Speaks for itself, Remove if none.
         CurrentValue = false,
-        Flag = "noclip", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+        Flag = "stopsnow", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
         Callback = function(Value)
             stopsnowtoggled = Value
 
@@ -904,10 +906,35 @@ if game.PlaceId == 7533528186 then
         end,
     })
 
+    local call911toggled = false
+    local call911_connection = nil
+
+    local call911toggle = lpTab:CreateToggle({
+        Name = "Spam 911 calls (USE ALT)",
+        Info = "This is bannable and very risky!", -- Speaks for itself, Remove if none.
+        CurrentValue = false,
+        Flag = "call911", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+        Callback = function(Value)
+            call911toggled = Value
+
+            if Value == true then
+                call911_connection = game:GetService("RunService").RenderStepped:Connect(function()
+                    game:GetService("ReplicatedStorage").PhoneEvent:FireServer("911",{["Description"]="i shit myself",["Location"]="your mom's bed"})
+                    
+                    if call911toggled == false then
+                        call911_connection:Disconnect()
+                        call911_connection = nil
+                    end
+                end)
+            end
+        end,
+    })
+
     local panicmodeButton = lpTab:CreateButton({
         Name = "Panic mode",
         Interact = 'Disables everything',
         Callback = function()
+            call911toggle:Set(false)
             HBEpartToggle:Set(false)
             infstamina:Set(false)
             nocliptoggle:Set(false)
