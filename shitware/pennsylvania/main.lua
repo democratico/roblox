@@ -866,6 +866,43 @@ if game.PlaceId == 7533528186 then
         end,
     })
 
+    local stopsnowtoggled = false
+    local stopsnow_connection = nil
+
+    local stopsnowtoggle = lpTab:CreateToggle({
+        Name = "Delete snow",
+        Info = "Will let you walk through walls", -- Speaks for itself, Remove if none.
+        CurrentValue = false,
+        Flag = "noclip", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+        Callback = function(Value)
+            stopsnowtoggled = Value
+
+            if Value == true then
+                game.Workspace:WaitForChild("ThatSnowRenderModel").Parent = game.CoreGui
+                stopsnow_connection = game:GetService("RunService").RenderStepped:Connect(function()
+                    if game.Players.LocalPlayer ~= nil then
+                        if game.Players.LocalPlayer.PlayerScripts:WaitForChild("Snow").Disabled == false then
+                            game.Players.LocalPlayer.PlayerScripts:WaitForChild("Snow").Disabled = true
+                        end
+                    end
+                    if stopsnowtoggled == false then
+                        stopsnow_connection:Disconnect()
+                        stopsnow_connection = nil
+                        if game.Players.LocalPlayer ~= nil then
+                            if game.CoreGui:FindFirstChild("ThatSnowRenderModel") then
+                                game.CoreGui:FindFirstChild("ThatSnowRenderModel").Parent = game.Workspace
+                            end
+                            game.Workspace:WaitForChild("ThatSnowRenderModel"):Destroy()
+                            if game.Players.LocalPlayer.PlayerScripts:WaitForChild("Snow").Disabled == true then
+                                game.Players.LocalPlayer.PlayerScripts:WaitForChild("Snow").Disabled = false
+                            end
+                        end
+                    end
+                end)
+            end
+        end,
+    })
+
     local panicmodeButton = lpTab:CreateButton({
         Name = "Panic mode",
         Interact = 'Disables everything',
@@ -878,6 +915,7 @@ if game.PlaceId == 7533528186 then
             infjump:Set(false)
             walkspeed:Set(16)
             jumppower:Set(39)
+            stopsnowtoggle:Set(false)
             for _, anim in pairs(game.Players.LocalPlayer.Character.Humanoid:FindFirstChild("Animator"):GetPlayingAnimationTracks()) do
                 anim:Stop()
             end
