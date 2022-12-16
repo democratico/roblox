@@ -87,6 +87,7 @@ if game.PlaceId == 7533528186 then
     end)
 
     function disableAC()
+        game:GetService("Players").LocalPlayer.Backpack.LocalScript.Disabled = true
         game.Players.LocalPlayer.Character.Packed.Loader2.Disabled = true
         game.Players.LocalPlayer.Character.Packed.Loader1.Disabled = true
     end
