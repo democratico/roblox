@@ -58,12 +58,12 @@ if game.PlaceId == 7533528186 then
     local character = plr.Character or plr.CharacterAdded:Wait()
 
     function getchar()
-        if workspace:FindFirstChild(plr.Name) then
-            character = workspace:FindFirstChild(plr.Name)
+        if workspace:FindFirstChild(game.Players.LocalPlayer.Name) then
+            character = workspace:FindFirstChild(game.Players.LocalPlayer.Name)
         else
-            character = plr.Character or plr.CharacterAdded:Wait()
+            character = game.Players.LocalPlayer.Character or game.Players.LocalPlayer.CharacterAdded:Wait()
         end
-        plr = game.Players[plr.Name] or game.Players.LocalPlayer
+        plr = game.Players.LocalPlayer
     end
 
     local maxBalance = {
@@ -87,14 +87,14 @@ if game.PlaceId == 7533528186 then
     end)
 
     function disableAC()
-        character.Packed.Loader2.Disabled = true
-        character.Packed.Loader1.Disabled = true
+        game.Players.LocalPlayer.Character.Packed.Loader2.Disabled = true
+        game.Players.LocalPlayer.Character.Packed.Loader1.Disabled = true
     end
 
     disableAC()
     spawn(function()
         while task.wait() do
-            if character.Packed.Loader2.Disabled == false and character.Packed.Loader1.Disabled == false then
+            if game.Players.LocalPlayer.Character.Packed.Loader2.Disabled == false and game.Players.LocalPlayer.Character.Packed.Loader1.Disabled == false then
                 disableAC()
             end
             getchar()
@@ -118,15 +118,15 @@ if game.PlaceId == 7533528186 then
                     if bRobbing == false then
                         if game:GetService("Workspace").Buildings.BankFolder.CanBeRobbed.Value == true then
                             bRobbing = true
-                            if game.ReplicatedStorage.MoneyData[plr.Name].BankAccount.Value < maxBalance[2] and
-                                game.ReplicatedStorage.MoneyData[plr.Name].Cash.Value < maxBalance[1] then
-                                character.HumanoidRootPart.CFrame = game:GetService("Workspace").Buildings.BankFolder.Detector.CFrame
+                            if game.ReplicatedStorage.MoneyData[game.Players.LocalPlayer.Name].BankAccount.Value < maxBalance[2] and
+                                game.ReplicatedStorage.MoneyData[game.Players.LocalPlayer.Name].Cash.Value < maxBalance[1] then
+                                    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game:GetService("Workspace").Buildings.BankFolder.Detector.CFrame
                                 repeat
                                     wait()
-                                until plr.BankStats.CashCollected.Value == 15000
-                                if plr.BankStats.CashCollected.Value == 15000 then
+                                until game.Players.LocalPlayer.BankStats.CashCollected.Value == 15000
+                                if game.Players.LocalPlayer.BankStats.CashCollected.Value == 15000 then
                                     local npc = game:GetService("Workspace").Systems["Bank Heist Collector"]
-                                    character.HumanoidRootPart.CFrame = npc.Head.CFrame
+                                    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = npc.Head.CFrame
                                     wait(0.2)
                                     npc.HumanoidRootPart.ProximityPrompt:InputHoldBegin()
                                     wait(npc.HumanoidRootPart.ProximityPrompt.HoldDuration)
@@ -155,6 +155,13 @@ if game.PlaceId == 7533528186 then
     end
 
     local mTab = Window:CreateTab("Money", 4483362458)
+    local infmoney = mTab:CreateButton({
+        Name = "Infinite money",
+        Interact = 'Gives you 500K',
+        Callback = function()
+            game:GetService("ReplicatedStorage").MoneySystem:FireServer("ATM",{["action"]="withdraw",["amount"]=-129392315})
+        end,
+    })
     local afSection = mTab:CreateSection("Autofarm")
     local bAF_Toggle = mTab:CreateToggle({
         Name = "Bank AutoFarm",
@@ -195,7 +202,7 @@ if game.PlaceId == 7533528186 then
         OnEnter = true,
         RemoveTextAfterFocusLost = false,
         Callback = function(Text)
-            if tonumber(game.ReplicatedStorage.MoneyData[plr.Name].Cash.Value) > tonumber(Text) then
+            if tonumber(game.ReplicatedStorage.MoneyData[game.Players.LocalPlayer.Name].Cash.Value) > tonumber(Text) then
                 game:GetService("ReplicatedStorage").MoneySystem:FireServer("ATM",{ ["action"] = "deposit", ["amount"] = tonumber(Text) })
             end
         end,
@@ -210,7 +217,7 @@ if game.PlaceId == 7533528186 then
         OnEnter = true,
         RemoveTextAfterFocusLost = false,
         Callback = function(Text)
-            if tonumber(game.ReplicatedStorage.MoneyData[plr.Name].BankAccount.Value) > tonumber(Text) then
+            if tonumber(game.ReplicatedStorage.MoneyData[game.Players.LocalPlayer.Name].BankAccount.Value) > tonumber(Text) then
                 game:GetService("ReplicatedStorage").MoneySystem:FireServer("ATM",{ ["action"] = "withdraw", ["amount"] = tonumber(Text) })
             end
         end,
@@ -233,53 +240,53 @@ if game.PlaceId == 7533528186 then
         Flag = "cityLocations", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
         Callback = function(Option)
             if Option == "Civ Spawn" then
-                character.HumanoidRootPart.CFrame = CFrame.new(-1173.93433, 5.88394547, -1880.65991, 1,8.36646841e-09,3.2875324e-14, -8.36646841e-09, 1, 4.62313281e-08, -3.24885315e-14, -4.62313281e-08, 1)
+                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-1173.93433, 5.88394547, -1880.65991, 1,8.36646841e-09,3.2875324e-14, -8.36646841e-09, 1, 4.62313281e-08, -3.24885315e-14, -4.62313281e-08, 1)
             elseif Option == "Harmony Bank" then
-                character.HumanoidRootPart.CFrame = CFrame.new(31.5773354, 5.91323566, -356.561401, -0.978007615,-1.89580884e-08, 0.208569288, 3.93860278e-09, 1, 1.09364478e-07, -0.208569288, 1.07780764e-07,-0.978007615)
+                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(31.5773354, 5.91323566, -356.561401, -0.978007615,-1.89580884e-08, 0.208569288, 3.93860278e-09, 1, 1.09364478e-07, -0.208569288, 1.07780764e-07,-0.978007615)
             elseif Option == "Car DealerShip" then
-                character.HumanoidRootPart.CFrame = CFrame.new(-1210.17554, 5.27346802, -1918.92432, 1.28122911e-05,1.10993717e-07, -1, -8.48555981e-09, 1, 1.10993611e-07, 1, 8.48413784e-09, 1.28122911e-05)
+                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-1210.17554, 5.27346802, -1918.92432, 1.28122911e-05,1.10993717e-07, -1, -8.48555981e-09, 1, 1.10993611e-07, 1, 8.48413784e-09, 1.28122911e-05)
             elseif Option == "MCSO Spawn" then
-                character.HumanoidRootPart.CFrame = CFrame.new(382.288818, 6.24014473, -2281.3103, 1, 3.74453357e-08,-4.14666402e-14, -3.74453357e-08, 1, -2.88966007e-09, 4.13584369e-14, 2.88966007e-09, 1)
+                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(382.288818, 6.24014473, -2281.3103, 1, 3.74453357e-08,-4.14666402e-14, -3.74453357e-08, 1, -2.88966007e-09, 4.13584369e-14, 2.88966007e-09, 1)
             elseif Option == "PSP Spawn" then
-                character.HumanoidRootPart.CFrame = CFrame.new(-2731.01465, 19.3445129, -557.929138, 0.999382854,7.87512704e-08, -0.0351276472, -7.89161447e-08, 1, -3.30711614e-09, 0.0351276472, 6.0772134e-09,0.999382854)
+                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-2731.01465, 19.3445129, -557.929138, 0.999382854,7.87512704e-08, -0.0351276472, -7.89161447e-08, 1, -3.30711614e-09, 0.0351276472, 6.0772134e-09,0.999382854)
             elseif Option == "Prisoners Spawn" then
-                character.HumanoidRootPart.CFrame = CFrame.new(-3322.72437, -43.3606415, 1017.85297, -0.173402622,-1.5545071e-08, 0.984851003, -3.87683841e-09, 1, 1.51015893e-08, -0.984851003, -1.19945309e-09,-0.173402622)
+                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-3322.72437, -43.3606415, 1017.85297, -0.173402622,-1.5545071e-08, 0.984851003, -3.87683841e-09, 1, 1.51015893e-08, -0.984851003, -1.19945309e-09,-0.173402622)
             elseif Option == "CMPD Spawn" then
-                character.HumanoidRootPart.CFrame = CFrame.new(-598.078003, 5.92038918, 239.346771, 0.965884566,-1.51863355e-09, -0.258973002, 6.3851906e-09, 1, 1.79506117e-08, 0.258973002, -1.8991809e-08,0.965884566)
+                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-598.078003, 5.92038918, 239.346771, 0.965884566,-1.51863355e-09, -0.258973002, 6.3851906e-09, 1, 1.79506117e-08, 0.258973002, -1.8991809e-08,0.965884566)
             elseif Option == "MCFD Spawn" then
-                character.HumanoidRootPart.CFrame = CFrame.new(-1215.02686, 5.1999979, -1513.53711, 1,-9.05407305e-09,-3.94508602e-15, 9.05407305e-09, 1, 1.1324002e-07, 2.9198024e-15, -1.1324002e-07, 1)
+                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-1215.02686, 5.1999979, -1513.53711, 1,-9.05407305e-09,-3.94508602e-15, 9.05407305e-09, 1, 1.1324002e-07, 2.9198024e-15, -1.1324002e-07, 1)
             elseif Option == "DOT Spawn" then
-                character.HumanoidRootPart.CFrame = CFrame.new(-1203.50549, 5.36495876, -1677.8064, 1, 5.4062661e-09,-3.78522676e-15, -5.4062661e-09, 1, -6.76176128e-08, 3.41966788e-15, 6.76176128e-08, 1)
+                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-1203.50549, 5.36495876, -1677.8064, 1, 5.4062661e-09,-3.78522676e-15, -5.4062661e-09, 1, -6.76176128e-08, 3.41966788e-15, 6.76176128e-08, 1)
             elseif Option == "Army Spawn" then
-                character.HumanoidRootPart.CFrame = CFrame.new(-1831.17102, 5.30218697, 2344.15625, 1, -9.2644088e-09,-4.07671621e-15, 9.2644088e-09, 1, 1.15873256e-07, 3.00321905e-15, -1.15873256e-07, 1)
+                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-1831.17102, 5.30218697, 2344.15625, 1, -9.2644088e-09,-4.07671621e-15, 9.2644088e-09, 1, 1.15873256e-07, 3.00321905e-15, -1.15873256e-07, 1)
             elseif Option == "Soel's Guns & Ammo" then
-                character.HumanoidRootPart.CFrame = CFrame.new(-309.382355, 5.8839426, -135.703949, 0.998898745,2.65400839e-08, 0.0469181463, -2.72317511e-08, 1, 1.41027954e-08, -0.0469181463, -1.53649271e-08,0.998898745)
+                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-309.382355, 5.8839426, -135.703949, 0.998898745,2.65400839e-08, 0.0469181463, -2.72317511e-08, 1, 1.41027954e-08, -0.0469181463, -1.53649271e-08,0.998898745)
             elseif Option == "Casino" then
-                character.HumanoidRootPart.CFrame = CFrame.new(143.98848, 5.88394356, 18.0760098, 0.0201089773,-2.57470525e-08, -0.999797821, 5.29057189e-08, 1, -2.46881644e-08, 0.999797821, -5.23985655e-08,0.0201089773)
+                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(143.98848, 5.88394356, 18.0760098, 0.0201089773,-2.57470525e-08, -0.999797821, 5.29057189e-08, 1, -2.46881644e-08, 0.999797821, -5.23985655e-08,0.0201089773)
             elseif Option == "Philly Hospital" then
-                character.HumanoidRootPart.CFrame = CFrame.new(-1001.57166, 5.88399792, 123.13372, 0.0152309462,3.86254619e-08, 0.999884009, -8.09245222e-08, 1, -3.73972426e-08, -0.999884009, -8.03455364e-08,0.0152309462)
+                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-1001.57166, 5.88399792, 123.13372, 0.0152309462,3.86254619e-08, 0.999884009, -8.09245222e-08, 1, -3.73972426e-08, -0.999884009, -8.03455364e-08,0.0152309462)
             elseif Option == "Jewelry (INSIDE)" then
-                character.HumanoidRootPart.CFrame = CFrame.new(-537.246643, 6.03827095, -853.070435, -0.830620885,7.37640136e-08, 0.556838393, 6.01162355e-08, 1, -4.27955662e-08, -0.556838393, -2.07186468e-09,-0.830620885)
+                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-537.246643, 6.03827095, -853.070435, -0.830620885,7.37640136e-08, 0.556838393, 6.01162355e-08, 1, -4.27955662e-08, -0.556838393, -2.07186468e-09,-0.830620885)
             elseif Option == "Jewelry (OUTSIDE)" then
-                character.HumanoidRootPart.CFrame = CFrame.new(-561.167053, 5.88394451, -854.050842, 0.0213721693,5.21850581e-08, 0.999771595, 2.09134416e-08, 1, -5.26440473e-08, -0.999771595, 2.2033781e-08,0.0213721693)
+                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-561.167053, 5.88394451, -854.050842, 0.0213721693,5.21850581e-08, 0.999771595, 2.09134416e-08, 1, -5.26440473e-08, -0.999771595, 2.2033781e-08,0.0213721693)
             elseif Option == "Los pollos hermanos" then
-                character.HumanoidRootPart.CFrame = CFrame.new(-116.03347, 5.88399887, -274.641907, -0.0196507238,9.51928314e-08, 0.999806881, 2.66311257e-08, 1, -9.46877989e-08, -0.999806881, 2.47652991e-08,-0.0196507238)
+                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-116.03347, 5.88399887, -274.641907, -0.0196507238,9.51928314e-08, 0.999806881, 2.66311257e-08, 1, -9.46877989e-08, -0.999806881, 2.47652991e-08,-0.0196507238)
             elseif Option == "Big Bros (OUTSIDE)" then
-                character.HumanoidRootPart.CFrame = CFrame.new(-572.559998, 5.8839426, -97.0449829, 0.023679141,1.19046923e-08, 0.99971962, 1.91857303e-08, 1, -1.23624604e-08, -0.99971962, 1.94730827e-08,0.023679141)
+                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-572.559998, 5.8839426, -97.0449829, 0.023679141,1.19046923e-08, 0.99971962, 1.91857303e-08, 1, -1.23624604e-08, -0.99971962, 1.94730827e-08,0.023679141)
             elseif Option == "Big Bros (ROOF)" then
-                character.HumanoidRootPart.CFrame = CFrame.new(-510.76825, 236.250916, -228.591446, 0.446605772,2.39485249e-08, 0.894730866, 3.44310465e-08, 1, -4.39524683e-08, -0.894730866, 5.04359434e-08,0.446605772)
+                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-510.76825, 236.250916, -228.591446, 0.446605772,2.39485249e-08, 0.894730866, 3.44310465e-08, 1, -4.39524683e-08, -0.894730866, 5.04359434e-08,0.446605772)
             elseif Option == "Philly Shooting Club" then
-                character.HumanoidRootPart.CFrame = CFrame.new(-450.95224, 5.88394356, -571.02179, 0.0151820518,-2.80393078e-08, -0.999884725, 4.91787198e-08, 1, -2.72958189e-08, 0.999884725, -4.87586469e-08,0.0151820518)
+                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-450.95224, 5.88394356, -571.02179, 0.0151820518,-2.80393078e-08, -0.999884725, 4.91787198e-08, 1, -2.72958189e-08, 0.999884725, -4.87586469e-08,0.0151820518)
             elseif Option == "Philly Paint Shop" then
-                character.HumanoidRootPart.CFrame = CFrame.new(-2778.39771, 5.32951736, 453.593018, 0.0230581202,-2.65987765e-08, -0.999734104, 9.58970858e-09, 1, -2.63846704e-08, 0.999734104, -8.97877861e-09,0.0230581202)
+                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-2778.39771, 5.32951736, 453.593018, 0.0230581202,-2.65987765e-08, -0.999734104, 9.58970858e-09, 1, -2.63846704e-08, 0.999734104, -8.97877861e-09,0.0230581202)
             elseif Option == "Pawn Shop" then
-                character.HumanoidRootPart.CFrame = CFrame.new(-2708.92627, 6.1139698, 355.354126, 0.992190361,6.5075632e-08, -0.12473283, -6.73238105e-08, 1, -1.3808755e-08, 0.12473283, 2.20984031e-08,0.992190361)
+                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-2708.92627, 6.1139698, 355.354126, 0.992190361,6.5075632e-08, -0.12473283, -6.73238105e-08, 1, -1.3808755e-08, 0.12473283, 2.20984031e-08,0.992190361)
             elseif Option == "PPD Station" then
-                character.HumanoidRootPart.CFrame = CFrame.new(-598.20636, 5.92038822, 194.76738, 0.229997218,-1.06730241e-07, 0.973191261, 5.1633533e-09, 1, 1.08450088e-07, -0.973191261, -1.99182892e-08,0.229997218)
+                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-598.20636, 5.92038822, 194.76738, 0.229997218,-1.06730241e-07, 0.973191261, 5.1633533e-09, 1, 1.08450088e-07, -0.973191261, -1.99182892e-08,0.229997218)
             elseif Option == "PSP Station" then
-                character.HumanoidRootPart.CFrame = CFrame.new(-598.20636, 5.92038822, 194.76738, 0.229997218,-1.06730241e-07, 0.973191261, 5.1633533e-09, 1, 1.08450088e-07, -0.973191261, -1.99182892e-08,0.229997218)
+                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-598.20636, 5.92038822, 194.76738, 0.229997218,-1.06730241e-07, 0.973191261, 5.1633533e-09, 1, 1.08450088e-07, -0.973191261, -1.99182892e-08,0.229997218)
             elseif Option == "Capitol (INSIDE)" then
-                character.HumanoidRootPart.CFrame = CFrame.new(-598.20636, 5.92038822, 194.76738, 0.229997218,-1.06730241e-07, 0.973191261, 5.1633533e-09, 1, 1.08450088e-07, -0.973191261, -1.99182892e-08,0.229997218)
+                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-598.20636, 5.92038822, 194.76738, 0.229997218,-1.06730241e-07, 0.973191261, 5.1633533e-09, 1, 1.08450088e-07, -0.973191261, -1.99182892e-08,0.229997218)
             end
         end,
     })
@@ -293,7 +300,7 @@ if game.PlaceId == 7533528186 then
         CurrentOption = "",
         Flag = "pTPs", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
         Callback = function(Option)
-            character.HumanoidRootPart.CFrame = PS[Option].Character.HumanoidRootPart.CFrame
+            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = PS[Option].Character.HumanoidRootPart.CFrame
         end,
     })
 
@@ -310,12 +317,12 @@ if game.PlaceId == 7533528186 then
         Name = "Stop spectating",
         Interact = 'Click',
         Callback = function()
-            game.Workspace.Camera.CameraSubject = character.Humanoid
+            game.Workspace.Camera.CameraSubject = game.Players.LocalPlayer.Character.Humanoid
         end,
      })
 
     for _, p in pairs(PS:GetPlayers()) do
-        if p ~= plr then
+        if p ~= game.Players.LocalPlayer then
             PlayersTPs:Add(p.Name)
             spectatePlrsDropdown:Add(p.Name)
         end
@@ -335,9 +342,9 @@ if game.PlaceId == 7533528186 then
         HoldToInteract = false,
         Flag = "TPMPOS", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
         Callback = function(Keybind)
-            local mouse = plr:GetMouse()
+            local mouse = game.Players.LocalPlayer:GetMouse()
             if mouse.Target then
-                character.HumanoidRootPart.CFrame = CFrame.new(mouse.Hit.x, mouse.Hit.y + 5, mouse.Hit.z)
+                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(mouse.Hit.x, mouse.Hit.y + 5, mouse.Hit.z)
             end
         end,
     })
@@ -352,8 +359,8 @@ if game.PlaceId == 7533528186 then
         CurrentOption = "",
         Flag = "modGun", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
         Callback = function(Option)
-            character.Humanoid:UnequipTools()
-            local m = require(plr.Backpack[Option].Resource.SettingsModule.ClientConfig)
+            game.Players.LocalPlayer.Character.Humanoid:UnequipTools()
+            local m = require(game.Players.LocalPlayer.Backpack[Option].Resource.SettingsModule.ClientConfig)
             m['Ammo'] = math.huge
             m['BaseDamage'] = math.huge
             m['LimbDamage'] = math.huge
@@ -375,13 +382,15 @@ if game.PlaceId == 7533528186 then
             m["BoltAction"] = false
         end,
     })
-    for _, tool in pairs(plr.Backpack:GetChildren()) do
+    for _, tool in pairs(game.Players.LocalPlayer.Backpack:GetChildren()) do
         if tool.Name == "AK47" or tool.Name == "M4 Carbine" or tool.Name == "Glock 17" or tool.Name == "Serbu BFG-50" then
             modGunDropdown:Add(tool.Name)
         end
     end
     game.Players.LocalPlayer.Backpack.ChildAdded:Connect(function(tool)
-        modGunDropdown:Add(tool.Name)
+        if tool.Name == "AK47" or tool.Name == "M4 Carbine" or tool.Name == "Glock 17" or tool.Name == "Serbu BFG-50" then
+            modGunDropdown:Add(tool.Name)
+        end
     end)
     game.Players.LocalPlayer.Backpack.ChildRemoved:Connect(function(tool)
         if tool.Name == "AK47" or tool.Name == "M4 Carbine" or tool.Name == "Glock 17" or tool.Name == "Serbu BFG-50" then
@@ -404,7 +413,7 @@ if game.PlaceId == 7533528186 then
     end)
 
     spawn(function()
-        if character.Humanoid.Health == 0 then
+        if game.Players.LocalPlayer.Character.Humanoid.Health == 0 then
             wait(game.Players.RespawnTime)
             getchar()
         end
@@ -424,34 +433,34 @@ if game.PlaceId == 7533528186 then
 
     function tagESP(player)
         for i,v in pairs(COREGUI:GetChildren()) do
-			if v.Name == plr.Name..'_ESP' then
+			if v.Name == game.Players.LocalPlayer.Name..'_ESP' then
 				v:Destroy()
 			end
 		end
 		wait()
-		if player.Character and player.Name ~= Players.LocalPlayer.Name and not COREGUI:FindFirstChild(player.Name..'_ESP') then
+		if game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Name ~= game.Players.LocalPlayer.Name and not COREGUI:FindFirstChild(game.Players.LocalPlayer.Name..'_ESP') then
             local ESPholder = Instance.new("Folder")
-			ESPholder.Name = player.Name..'_ESP'
+			ESPholder.Name = game.Players.LocalPlayer.Name..'_ESP'
 			ESPholder.Parent = COREGUI
-			repeat wait(1) until player.Character and getRoot(player.Character) and player.Character:FindFirstChildOfClass("Humanoid")
-			for b,n in pairs (player.Character:GetChildren()) do
+			repeat wait(1) until game.Players.LocalPlayer.Character and getRoot(game.Players.LocalPlayer.Character) and game.Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid")
+			for b,n in pairs (game.Players.LocalPlayer.Character:GetChildren()) do
 				if (n:IsA("BasePart")) then
 					local a = Instance.new("BoxHandleAdornment")
-					a.Name = player.Name
+					a.Name = game.Players.LocalPlayer.Name
 					a.Parent = ESPholder
 					a.Adornee = n
 					a.AlwaysOnTop = true
 					a.ZIndex = 10
 					a.Size = n.Size
 					a.Transparency = 0.3
-					a.Color = player.TeamColor
+					a.Color = game.Players.LocalPlayer.TeamColor
 				end
 			end
-            if player.Character and player.Character:FindFirstChild('Head') then
+            if game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild('Head') then
                 local BillboardGui = Instance.new("BillboardGui")
                 local TextLabel = Instance.new("TextLabel")
-                BillboardGui.Adornee = player.Character.Head
-                BillboardGui.Name = player.Name
+                BillboardGui.Adornee = game.Players.LocalPlayer.Character.Head
+                BillboardGui.Name = game.Players.LocalPlayer.Name
                 BillboardGui.Parent = ESPholder
                 BillboardGui.Size = UDim2.new(0, 100, 0, 150)
                 BillboardGui.StudsOffset = Vector3.new(0, 1, 0)
@@ -465,41 +474,41 @@ if game.PlaceId == 7533528186 then
                 TextLabel.TextColor3 = Color3.new(1, 1, 1)
                 TextLabel.TextStrokeTransparency = 0
                 TextLabel.TextYAlignment = Enum.TextYAlignment.Bottom
-                TextLabel.Text = 'Name: '..player.Name
+                TextLabel.Text = 'Name: '..game.Players.LocalPlayer.Name
                 TextLabel.ZIndex = 10
                 local espLoopFunc
                 local teamChange
                 local addedFunc
-                addedFunc = player.CharacterAdded:Connect(function()
+                addedFunc = game.Players.LocalPlayer.CharacterAdded:Connect(function()
                     if ESPenabled then
                         espLoopFunc:Disconnect()
                         teamChange:Disconnect()
                         ESPholder:Destroy()
-                        repeat wait(1) until getRoot(player.Character) and player.Character:FindFirstChildOfClass("Humanoid")
-                        tagESP(player)
+                        repeat wait(1) until getRoot(game.Players.LocalPlayer.Character) and game.Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid")
+                        tagESP(game.Players.LocalPlayer)
                         addedFunc:Disconnect()
                     else
                         teamChange:Disconnect()
                         addedFunc:Disconnect()
                     end
                 end)
-                teamChange = player:GetPropertyChangedSignal("TeamColor"):Connect(function()
+                teamChange = game.Players.LocalPlayer:GetPropertyChangedSignal("TeamColor"):Connect(function()
                     if ESPenabled then
                         espLoopFunc:Disconnect()
                         addedFunc:Disconnect()
                         ESPholder:Destroy()
-                        repeat wait(1) until getRoot(player.Character) and player.Character:FindFirstChildOfClass("Humanoid")
-                        tagESP(player)
+                        repeat wait(1) until getRoot(game.Players.LocalPlayer.Character) and game.Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid")
+                        tagESP(game.Players.LocalPlayer)
                         teamChange:Disconnect()
                     else
                         teamChange:Disconnect()
                     end
                 end)
                 local function espLoop()
-                    if COREGUI:FindFirstChild(player.Name..'_ESP') then
-                        if player.Character and getRoot(player.Character) and player.Character:FindFirstChildOfClass("Humanoid") and Players.LocalPlayer.Character and getRoot(Players.LocalPlayer.Character) and Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid") then
-                            local pos = math.floor((getRoot(Players.LocalPlayer.Character).Position - getRoot(player.Character).Position).magnitude)
-                            TextLabel.Text = 'Name: '..player.Name..' | Health: '..player.Character:FindFirstChildOfClass('Humanoid').Health..' | Studs: '..pos
+                    if COREGUI:FindFirstChild(game.Players.LocalPlayer.Name..'_ESP') then
+                        if game.Players.LocalPlayer.Character and getRoot(game.Players.LocalPlayer.Character) and game.Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid") and game.Players.LocalPlayer.Character and getRoot(game.Players.LocalPlayer.Character) and game.Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid") then
+                            local pos = math.floor((getRoot(game.Players.LocalPlayer.Character).Position - getRoot(game.Players.LocalPlayer.Character).Position).magnitude)
+                            TextLabel.Text = 'Name: '..game.Players.LocalPlayer.Name..' | Health: '..game.Players.LocalPlayer.Character:FindFirstChildOfClass('Humanoid').Health..' | Studs: '..pos
                         end
                     else
                         teamChange:Disconnect()
@@ -688,10 +697,9 @@ if game.PlaceId == 7533528186 then
         Name = "Stop animation",
         Interact = 'Click',
         Callback = function()
-            --for _, anim in pairs(character.Humanoid:FindFirstChild("Animator"):GetPlayingAnimationTracks()) do
-            --    anim:Stop()
-            --end
-            --playAnim(0,1,false)
+            for _, anim in pairs(game.Players.LocalPlayer.Character.Humanoid:FindFirstChild("Animator"):GetPlayingAnimationTracks()) do
+                anim:Stop()
+            end
         end,
     })
 
@@ -703,20 +711,20 @@ if game.PlaceId == 7533528186 then
             local UIS = game:GetService("UserInputService")
             local xd = UIS.InputBegan:Connect(function(input, isTyping)
                 if input.KeyCode == Enum.KeyCode.LeftShift and isTyping == false then
-                    character.Humanoid.WalkSpeed = 26
+                    game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 26
                 end
             end)
             local xd2 = UIS.InputEnded:Connect(function(input, isTyping)
                 if input.KeyCode == Enum.KeyCode.LeftShift and isTyping == false then
-                    character.Humanoid.WalkSpeed = 16
+                    game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 16
                 end
             end)
             if Value == true then
-                plr.PlayerGui.MainUI.Stamina.SprintHandler.Disabled = true
+                game.Players.LocalPlayer.PlayerGui.MainUI.Stamina.SprintHandler.Disabled = true
             else
                 xd:Disconnect()
                 xd2:Disconnect()
-                plr.PlayerGui.MainUI.Stamina.SprintHandler.Disabled = false
+                game.Players.LocalPlayer.PlayerGui.MainUI.Stamina.SprintHandler.Disabled = false
             end
         end,
     })
@@ -725,7 +733,7 @@ if game.PlaceId == 7533528186 then
         Name = "Reset player",
         Interact = 'Click',
         Callback = function()
-            character.Humanoid.Health = 0
+            game.Players.LocalPlayer.Character.Humanoid.Health = 0
         end,
     })
 
@@ -738,7 +746,7 @@ if game.PlaceId == 7533528186 then
         Flag = "WS", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
         Callback = function(Value)
             disableAC()
-            character.Humanoid.WalkSpeed = Value
+            game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = Value
         end,
     })
 
@@ -751,12 +759,11 @@ if game.PlaceId == 7533528186 then
         Flag = "JP", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
         Callback = function(Value)
             disableAC()
-            character.Humanoid.JumpPower = Value
+            game.Players.LocalPlayer.Character.Humanoid.JumpPower = Value
         end,
     })
 
     local infjumptoggled = false
-
     local infjump = lpTab:CreateToggle({
         Name = "Infinite jump",
         Info = "Makes you fly by jumping without falling down", -- Speaks for itself, Remove if none.
@@ -768,9 +775,9 @@ if game.PlaceId == 7533528186 then
                 spawn(function()
                     while wait() do
                         if infjumptoggled == false then break; end
-                        character.Humanoid:ChangeState("Jumping")
+                        game.Players.LocalPlayer.Character.Humanoid:ChangeState("Jumping")
                         wait(0.1)
-                        character.Humanoid:ChangeState("Seated")
+                        game.Players.LocalPlayer.Character.Humanoid:ChangeState("Seated")
                     end
                 end)
             end
@@ -836,9 +843,8 @@ if game.PlaceId == 7533528186 then
 
             if Value == true then
                 noclip_connection = game:GetService("RunService").RenderStepped:Connect(function()
-                    local speaker = game.Players.LocalPlayer
-                    if speaker.Character ~= nil then
-                        for _, child in pairs(speaker.Character:GetDescendants()) do
+                    if game.Players.LocalPlayer.Character ~= nil then
+                        for _, child in pairs(game.Players.LocalPlayer.Character:GetDescendants()) do
                             if child:IsA("BasePart") and child.CanCollide == true then
                                 child.CanCollide = false
                             end
@@ -847,9 +853,8 @@ if game.PlaceId == 7533528186 then
                     if nocliptoggled == false then
                         noclip_connection:Disconnect()
                         noclip_connection = nil
-                        local speaker = game.Players.LocalPlayer
-                        if speaker.Character ~= nil then
-                            for _, child in pairs(speaker.Character:GetDescendants()) do
+                        if game.Players.LocalPlayer.Character ~= nil then
+                            for _, child in pairs(game.Players.LocalPlayer.Character:GetDescendants()) do
                                 if child:IsA("BasePart") and child.CanCollide == false then
                                     child.CanCollide = true
                                 end
@@ -857,6 +862,24 @@ if game.PlaceId == 7533528186 then
                         end
                     end
                 end)
+            end
+        end,
+    })
+
+    local panicmodeButton = lpTab:CreateButton({
+        Name = "Panic mode",
+        Interact = 'Disables everything',
+        Callback = function()
+            HBEpartToggle:Set(false)
+            infstamina:Set(false)
+            nocliptoggle:Set(false)
+            fullbright:Set(false)
+            devicetoggle:Set(false)
+            infjump:Set(false)
+            walkspeed:Set(16)
+            jumppower:Set(39)
+            for _, anim in pairs(game.Players.LocalPlayer.Character.Humanoid:FindFirstChild("Animator"):GetPlayingAnimationTracks()) do
+                anim:Stop()
             end
         end,
     })
