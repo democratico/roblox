@@ -874,7 +874,6 @@ if game.PlaceId == 7533528186 then
 
     local stopsnowtoggle = lpTab:CreateToggle({
         Name = "Delete snow",
-        Info = "Will let you walk through walls", -- Speaks for itself, Remove if none.
         CurrentValue = false,
         Flag = "stopsnow", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
         Callback = function(Value)
@@ -895,7 +894,6 @@ if game.PlaceId == 7533528186 then
                             if game.CoreGui:FindFirstChild("ThatSnowRenderModel") then
                                 game.CoreGui:FindFirstChild("ThatSnowRenderModel").Parent = game.Workspace
                             end
-                            game.Workspace:WaitForChild("ThatSnowRenderModel"):Destroy()
                             if game.Players.LocalPlayer.PlayerScripts:WaitForChild("Snow").Disabled == true then
                                 game.Players.LocalPlayer.PlayerScripts:WaitForChild("Snow").Disabled = false
                             end
