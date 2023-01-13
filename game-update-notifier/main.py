@@ -110,7 +110,7 @@ def check(gameid, universeId):
             notify(r3)
         else:
             print("Game has not updated.")
-        time.sleep(10)  # Checks every 10 minutes if the game has update
+        time.sleep(600)  # Checks every 10 minutes if the game has update
 
 def check2():
     os.system("cls")
