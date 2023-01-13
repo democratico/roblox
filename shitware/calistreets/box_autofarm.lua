@@ -12,24 +12,30 @@ if game.PlaceId == 11998813375 then
     
     function startxd()
         task.spawn(function()
-            while task.wait(24) do
+            game:GetService("Workspace")['game'].interactive.jobs.TruckJob.Shelves["Warehouse Shelf 1"].Name = "WarehouseShelf69"
+            while task.wait(23.2) do
                 if _G.box_AF == true then
                     character.HumanoidRootPart.CFrame = CFrame.new(28.6322002, 3.40753126, 141.114059, 0.409054905, 4.89856724e-08, -0.912509799, -1.10760638e-07, 1, 4.03118161e-09, 0.912509799, 9.9421186e-08, 0.409054905)
-                    fireproximityprompt(game:GetService("Workspace").game.interactive.jobs.TruckJob.Truck.MeshPart.Attachment.ProximityPrompt)
-                    wait(game:GetService("Workspace").game.interactive.jobs.TruckJob.Truck.MeshPart.Attachment.ProximityPrompt.HoldDuration)
-                    character.HumanoidRootPart.CFrame = CFrame.new(15.2930155, 3.42577648, 75.869606, -0.986088037, 2.45843186e-08, -0.166223839, 2.44509835e-08, 1, 2.84855317e-09, 0.166223839, -1.255412e-09, -0.986088037)
-                    fireproximityprompt(game:GetService("Workspace").game.interactive.jobs.TruckJob.Shelves["Warehouse Shelf 1"].Attachment.ProximityPrompt)
-                    wait(game:GetService("Workspace").game.interactive.jobs.TruckJob.Shelves["Warehouse Shelf 1"].Attachment.ProximityPrompt.HoldDuration)
+                    wait(.15)
+                    fireproximityprompt(game:GetService("Workspace")['game'].interactive.jobs.TruckJob.Truck.MeshPart.Attachment.ProximityPrompt)
+                    wait(1)
+                    character.HumanoidRootPart.CFrame = game:GetService("Workspace")['game'].interactive.jobs.TruckJob.Shelves["WarehouseShelf69"].CFrame
+                    wait(.25)
+                    fireproximityprompt(game:GetService("Workspace")['game'].interactive.jobs.TruckJob.Shelves["WarehouseShelf69"].Attachment.ProximityPrompt)
+                    wait(.8)
                 else
-                    check()
+                    check(true)
                     break
                 end
             end
         end)
     end
     
-    function check()
+    function check(xd)
         task.spawn(function()
+            if xd == true then
+                game:GetService("Workspace")['game'].interactive.jobs.TruckJob.Shelves["WarehouseShelf69"].Name = "Warehouse Shelf 1"
+            end
             local a
             a = RunService.Heartbeat:Connect(function(step)
                 if _G.box_AF == true then
@@ -40,5 +46,5 @@ if game.PlaceId == 11998813375 then
         end)
     end
     
-    check() 
+    check(false) 
 end
