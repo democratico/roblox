@@ -1,4 +1,3 @@
---loadstring(game:HttpGet('https://raw.githubusercontent.com/imvipp/roblox/main/shitware/pilgrammed/main.lua'))()
 -- init
 local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/GreenDeno/Venyx-UI-Library/main/source.lua"))()
 local venyx = library.new("ShitWare / Pilgrammed", 5013109572)
@@ -28,16 +27,18 @@ coroutine.resume(coroutine.create(function()
         plr = game:GetService("Players").LocalPlayer
         character = plr.Character or plr.CharacterAdded:Wait()
         hum = character:FindFirstChildWhichIsA("Humanoid")
+        if hum.Name ~= "XD" then
+            hum.Name = "XD"
+        end
         root = character:FindFirstChild("HumanoidRootPart")
         task.wait()
     end
 end))
 
 ----
-
-for i,connection in pairs(getconnections(game.RunService.Heartbeat)) do
-    connection:Disable()
-end
+--for i,connection in pairs(getconnections(game.RunService.Heartbeat)) do
+--    connection:Disable()
+--end
 for i,connection in pairs(getconnections(root.Changed)) do
     connection:Disable()
 end
