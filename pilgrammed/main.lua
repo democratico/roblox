@@ -1,3 +1,4 @@
+--loadstring(game:HttpGet('https://raw.githubusercontent.com/imvipp/roblox/main/shitware/pilgrammed/main.lua'))()
 -- init
 local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/GreenDeno/Venyx-UI-Library/main/source.lua"))()
 local venyx = library.new("ShitWare / Pilgrammed", 5013109572)
