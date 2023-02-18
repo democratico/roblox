@@ -18,34 +18,29 @@ local section1 = lpPage:addSection("Client")
 local section2 = lpPage:addSection("Character Customization")
 
 plr = game:GetService("Players").LocalPlayer
-character = plr.Character or plr.CharacterAdded:Wait()
+character = plr.Character
 hum = character:FindFirstChildWhichIsA("Humanoid")
 root = character:FindFirstChild("HumanoidRootPart")
 
-coroutine.resume(coroutine.create(function()
-    while true do
-        plr = game:GetService("Players").LocalPlayer
-        character = plr.Character or plr.CharacterAdded:Wait()
-        hum = character:FindFirstChildWhichIsA("Humanoid")
-        if hum.Name ~= "XD" then
-            hum.Name = "XD"
+task.spawn(function()
+    while task.wait() do
+        character = plr.Character
+        if character ~= nil and character:FindFirstChildWhichIsA("Humanoid") ~= nil then
+            hum = character:FindFirstChildWhichIsA("Humanoid")
+            root = character:FindFirstChild("HumanoidRootPart")
+            if hum.Name ~= "XD" then
+                hum.Name = "XD"
+            end 
         end
-        root = character:FindFirstChild("HumanoidRootPart")
-        task.wait()
     end
-end))
+end)
 
 ----
 --for i,connection in pairs(getconnections(game.RunService.Heartbeat)) do
 --    connection:Disable()
 --end
-for i,connection in pairs(getconnections(root.Changed)) do
-    connection:Disable()
-end
 
-for i,connection in pairs(getconnections(root:GetPropertyChangedSignal("CFrame"))) do
-    connection:Disable()
-end
+
 
 ----
 
