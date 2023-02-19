@@ -28,19 +28,39 @@ task.spawn(function()
         if character ~= nil and character:FindFirstChildWhichIsA("Humanoid") ~= nil then
             hum = character:FindFirstChildWhichIsA("Humanoid")
             root = character:FindFirstChild("HumanoidRootPart")
-            if hum.Name ~= "XD" then
-                hum.Name = "XD"
-            end 
         end
     end
 end)
 
 ----
---for i,connection in pairs(getconnections(game.RunService.Heartbeat)) do
---    connection:Disable()
---end
+for i,connection in pairs(getconnections(game.RunService.Heartbeat)) do
+    connection:Disable()
+end
 
+local jp = nil
+jp = hookmetamethod(game, "__index", newcclosure(function(Self, Key)
+    if not checkcaller() and tostring(Self) == "RunService" and Key == "Heartbeat" then
+        return nil
+    end
 
+    return jp(Self, Key)
+end))
+
+local OldNameCall = nil
+OldNameCall = hookmetamethod(game, "__namecall", function(Self, ...)
+    local Args = {...}
+    local NamecallMethod = getnamecallmethod()
+
+    if not checkcaller() and Self == game and NamecallMethod == "GetService" and Args[1] == "RunService" then
+        return nil
+    end
+
+    return OldNameCall(Self, ...)
+end)
+
+if character then
+    character:BreakJoints() -- so ControlScript is added again to player's character and RunService is hooked so it cant run the loop
+end
 
 ----
 
