@@ -1,5 +1,3 @@
--- loadstring(game:HttpGet('https://raw.githubusercontent.com/imvipp/roblox/main/shitware/ezdev/main.lua'))()
-
 if game.PlaceId == 12413160778 then
    -- init
     local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/GreenDeno/Venyx-UI-Library/main/source.lua"))()
@@ -40,17 +38,6 @@ if game.PlaceId == 12413160778 then
     local localplayer_page = venyx:addPage("LocalPlayer", 5012544693)
     local character_sec = localplayer_page:addSection("Character")
 
-    local OldNameCall = nil
-    OldNameCall = hookmetamethod(game, "__namecall", function(Self, ...)
-        local NamecallMethod = getnamecallmethod()
-
-        if not checkcaller() and Self == plr and NamecallMethod == "Kick" then
-            return wait(9e9)
-        end
-
-        return OldNameCall(Self, ...)
-    end)
-
     character_sec:addSlider("WalkSpeed", 0, 15, 500, function(value)
         hum.WalkSpeed = value
     end)
@@ -87,6 +74,17 @@ if game.PlaceId == 12413160778 then
 
     -- SCRIPTING
 
+    local OldNameCall = nil
+    OldNameCall = hookmetamethod(game, "__namecall", function(Self, ...)
+        local NamecallMethod = getnamecallmethod()
+
+        if not checkcaller() and Self == plr and NamecallMethod == "Kick" then
+            return wait(9e9)
+        end
+
+        return OldNameCall(Self, ...)
+    end)
+
     local m = require(plr.PlayerScripts.COM)
 
     local function getPlot()
@@ -107,7 +105,7 @@ if game.PlaceId == 12413160778 then
                         fixing = true
                         local oldcf = root.CFrame
                         local prompt = obj:FindFirstChild("BugFold"):FindFirstChildOfClass("Part"):FindFirstChildOfClass("ProximityPrompt")
-                        root.CFrame = .CFrame.new(obj:FindFirstChild("BugFold"):FindFirstChildOfClass("Part").CFrame.X+1.5,obj:FindFirstChild("BugFold"):FindFirstChildOfClass("Part").CFrame.Y,obj:FindFirstChild("BugFold"):FindFirstChildOfClass("Part").CFrame.Z)
+                        root.CFrame = CFrame.new(obj:FindFirstChild("BugFold"):FindFirstChildOfClass("Part").CFrame.X+1.5,obj:FindFirstChild("BugFold"):FindFirstChildOfClass("Part").CFrame.Y,obj:FindFirstChild("BugFold"):FindFirstChildOfClass("Part").CFrame.Z)
                         fireproximityprompt(prompt, prompt.MaxActivationDistance)
                         wait(.2)
                         root.CFrame = oldcf
