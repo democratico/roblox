@@ -1,3 +1,5 @@
+-- loadstring(game:HttpGet('https://raw.githubusercontent.com/imvipp/roblox/main/shitware/ezdev/main.lua'))()
+
 if game.PlaceId == 12413160778 then
    -- init
     local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/GreenDeno/Venyx-UI-Library/main/source.lua"))()
